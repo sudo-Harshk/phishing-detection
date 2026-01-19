@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 
 interface ProbabilityGaugeProps {
     probability: number; // 0-1 value
@@ -6,17 +6,55 @@ interface ProbabilityGaugeProps {
 }
 
 /**
- * Task 7: Probability Gauge
- * Horizontal progress bar with semantic color segments.
- * 0-30% Green, 31-70% Amber, 71-100% Red
+ * Probability Gauge with smooth interpolation
+ * Bar smoothly settles from previous value to new value
+ * Uses requestAnimationFrame for frame-synced smoothness
  */
 export default function ProbabilityGauge({ probability, className = "" }: ProbabilityGaugeProps) {
-    const percentage = Math.round(probability * 100);
+    const [displayedProb, setDisplayedProb] = useState(0);
+    const targetProbRef = useRef(probability);
 
-    // Determine color based on percentage
+    // Clamp probability between 0 and 1
+    const targetProb = Math.max(0, Math.min(1, probability));
+    targetProbRef.current = targetProb;
+
+    // Interpolation effect
+    useEffect(() => {
+        let rafId: number;
+
+        const animate = () => {
+            setDisplayedProb(prev => {
+                const target = targetProbRef.current;
+                const delta = target - prev;
+
+                // Snap to target when close enough
+                if (Math.abs(delta) < 0.001) {
+                    return target;
+                }
+
+                // Smooth interpolation with 0.12 factor (ease-out feel)
+                const next = prev + delta * 0.12;
+
+                // Clamp result
+                return Math.max(0, Math.min(1, next));
+            });
+
+            rafId = requestAnimationFrame(animate);
+        };
+
+        rafId = requestAnimationFrame(animate);
+
+        return () => cancelAnimationFrame(rafId);
+    }, [targetProb]);
+
+    // Display values
+    const displayPercentage = Math.round(displayedProb * 100);
+    const actualPercentage = Math.round(targetProb * 100);
+
+    // Determine color based on ACTUAL target percentage (not displayed)
     const getColor = () => {
-        if (percentage <= 30) return { bar: "bg-emerald-500", text: "text-emerald-600" };
-        if (percentage <= 70) return { bar: "bg-amber-500", text: "text-amber-600" };
+        if (actualPercentage <= 30) return { bar: "bg-emerald-500", text: "text-emerald-600" };
+        if (actualPercentage <= 70) return { bar: "bg-amber-500", text: "text-amber-600" };
         return { bar: "bg-red-500", text: "text-red-600" };
     };
 
@@ -28,8 +66,9 @@ export default function ProbabilityGauge({ probability, className = "" }: Probab
                 <span className="text-sm font-medium text-gray-600">
                     Phishing Probability
                 </span>
+                {/* Numeric label shows actual value immediately */}
                 <span className={`font-mono text-sm font-semibold ${colors.text}`}>
-                    {percentage}%
+                    {actualPercentage}%
                 </span>
             </div>
 
@@ -42,13 +81,11 @@ export default function ProbabilityGauge({ probability, className = "" }: Probab
                     <div className="w-[30%]" />
                 </div>
 
-                {/* Animated fill */}
-                <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${percentage}%` }}
-                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+                {/* Interpolated fill - NO CSS transition */}
+                <div
                     className={`absolute inset-y-0 left-0 ${colors.bar} rounded-full`}
                     style={{
+                        width: `${displayPercentage}%`,
                         boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)",
                     }}
                 />
