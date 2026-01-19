@@ -1,0 +1,152 @@
+# =========================
+# Python / Backend
+# =========================
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Pytest / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE - Python
+.spyderproject
+.spyproject
+
+# =========================
+# Node.js / Frontend
+# =========================
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Lock files (optional - uncomment to ignore)
+# package-lock.json
+
+# Vite
+*.local
+
+# =========================
+# IDEs / Editors
+# =========================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains (PyCharm, WebStorm)
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# =========================
+# OS Generated
+# =========================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# =========================
+# Logs / Temp Files
+# =========================
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Temp files
+*.tmp
+*.temp
+*.bak
+
+# =========================
+# ML / Models (Large Files)
+# =========================
+
+# HuggingFace cache (downloaded models)
+.cache/
+huggingface/
+
+# TensorFlow / Keras
+*.h5
+# *.keras  # Uncomment to ignore .keras files
+
+# PyTorch
+*.pt
+*.pth
+
+# ONNX
+*.onnx
+
+# Model checkpoints (uncomment if needed)
+# checkpoints/
+# *.ckpt
+
+# =========================
+# Project Specific
+# =========================
+
+# Keep the model file - do NOT ignore
+# backend/models/chargru_advtrain_model.keras
+
+# Test artifacts
+.hypothesis/
+
+# Secrets / credentials
+*.pem
+*.key
+secrets/
+credentials/
