@@ -64,7 +64,6 @@ export default function AnalysisResultPanel({ result, isLoading, error }: Analys
                             {/* Hero: Risk Status */}
                             <ResultStatusIndicator
                                 riskLevel={result.risk_level}
-                                label={result.label}
                             />
 
                             {/* Probability Bar */}

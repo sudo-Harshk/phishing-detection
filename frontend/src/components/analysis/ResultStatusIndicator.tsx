@@ -1,6 +1,5 @@
 interface ResultStatusIndicatorProps {
     riskLevel: "Low" | "Moderate" | "High";
-    label: string;
 }
 
 const riskConfig = {
@@ -39,7 +38,7 @@ const riskLabels = {
     High: "High Risk",
 };
 
-export default function ResultStatusIndicator({ riskLevel, label }: ResultStatusIndicatorProps) {
+export default function ResultStatusIndicator({ riskLevel }: ResultStatusIndicatorProps) {
     const config = riskConfig[riskLevel];
 
     return (
