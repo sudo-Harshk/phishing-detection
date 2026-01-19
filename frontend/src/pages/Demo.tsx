@@ -10,12 +10,7 @@ type Result = {
     model?: string;
 };
 
-/**
- * Task 4: Dual-Pane Layout
- * Left: Email input + Analyze button
- * Right: Analysis results
- * Responsive: stacks vertically on mobile
- */
+
 export default function Demo() {
     const [text, setText] = useState("");
     const [loading, setLoading] = useState(false);
@@ -23,11 +18,19 @@ export default function Demo() {
     const [error, setError] = useState<string | null>(null);
     const [hasAnalyzed, setHasAnalyzed] = useState(false);
 
+    // Minimum time to display the loading skeleton (prevents flashing)
+    const MIN_LOADING_TIME = 700;
+
     async function handleAnalyze() {
+        const startTime = performance.now();
+
         setLoading(true);
         setError(null);
         setResult(null);
         setHasAnalyzed(true);
+
+        let resultData: Result | null = null;
+        let errorMessage: string | null = null;
 
         try {
             const res = await fetch("http://127.0.0.1:8000/api/predict", {
@@ -37,13 +40,27 @@ export default function Demo() {
             });
 
             if (!res.ok) throw new Error();
-            const data = await res.json();
-            setResult(data);
+            resultData = await res.json();
         } catch {
-            setError("Unable to connect to backend");
-        } finally {
-            setLoading(false);
+            errorMessage = "Unable to connect to backend";
         }
+
+        // Ensure skeleton is visible for at least MIN_LOADING_TIME
+        const elapsed = performance.now() - startTime;
+        const remaining = MIN_LOADING_TIME - elapsed;
+
+        if (remaining > 0) {
+            await new Promise(resolve => setTimeout(resolve, remaining));
+        }
+
+        // Now update the UI
+        if (resultData) {
+            setResult(resultData);
+        }
+        if (errorMessage) {
+            setError(errorMessage);
+        }
+        setLoading(false);
     }
 
     return (
