@@ -7,6 +7,7 @@ venv/
 .venv/
 env/
 .env/
+ENV/
 
 # Python bytecode
 __pycache__/
@@ -30,6 +31,7 @@ dist/
 .coverage
 htmlcov/
 .tox/
+.nox/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -37,6 +39,11 @@ htmlcov/
 # IDE - Python
 .spyderproject
 .spyproject
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
 # =========================
 # Node.js / Frontend
@@ -47,15 +54,30 @@ node_modules/
 
 # Build output
 dist/
-build/
 .next/
 out/
 
-# Lock files (optional - uncomment to ignore)
+# Lock files (keep package-lock.json for reproducible builds)
 # package-lock.json
 
 # Vite
 *.local
+
+# ESLint cache
+.eslintcache
+
+# Parcel
+.parcel-cache/
+
+# =========================
+# Docker
+# =========================
+
+# Docker build logs
+build_log.txt
+
+# Local docker-compose overrides (if any)
+docker-compose.override.yml
 
 # =========================
 # IDEs / Editors
@@ -119,10 +141,11 @@ pnpm-debug.log*
 # HuggingFace cache (downloaded models)
 .cache/
 huggingface/
+~/.cache/huggingface/
 
-# TensorFlow / Keras
+# TensorFlow / Keras checkpoints
 *.h5
-# *.keras  # Uncomment to ignore .keras files
+# *.keras  # Keep .keras files - project model
 
 # PyTorch
 *.pt
@@ -131,16 +154,17 @@ huggingface/
 # ONNX
 *.onnx
 
-# Model checkpoints (uncomment if needed)
-# checkpoints/
-# *.ckpt
+# Model checkpoints
+checkpoints/
+*.ckpt
 
 # =========================
 # Project Specific
 # =========================
 
-# Keep the model file - do NOT ignore
-# backend/models/chargru_advtrain_model.keras
+# Keep these files (do NOT ignore):
+# - backend/models/chargru_advtrain_model.keras
+# - backend/assets/char_dictionary.json
 
 # Test artifacts
 .hypothesis/
@@ -150,3 +174,29 @@ huggingface/
 *.key
 secrets/
 credentials/
+
+# =========================
+# Gemini / AI Tools
+# =========================
+
+# Gemini agent artifacts (local only)
+.gemini/
+.agent/
+
+# =========================
+# Miscellaneous
+# =========================
+
+# Coverage reports
+coverage/
+
+# Typing stubs
+.pyi
+
+# Profiling
+*.prof
+
+# Compiled binaries
+*.so
+*.dll
+*.dylib

@@ -1,11 +1,24 @@
 # Demo Guide
 
+## Quick Start
+
+```bash
+docker-compose up --build
+```
+
+Open `http://localhost:3000`
+
+---
+
 ## Pre-Demo Checklist
 
-1. Start backend: `uvicorn app.main:app --reload --port 8000`
-2. Start frontend: `npm run dev`
-3. Open browser: `http://localhost:5173`
-4. Run one test prediction to warm up model
+- [ ] Docker Desktop running
+- [ ] Run `docker-compose up --build`
+- [ ] Wait for containers to start (~1-2 min)
+- [ ] Open `http://localhost:3000`
+- [ ] Run one test prediction to warm up model
+
+---
 
 ## Sample Emails
 
@@ -57,6 +70,8 @@ Best regards,
 Promotions Team
 ```
 
+---
+
 ## Demo Flow
 
 1. **Start with Clean Email**
@@ -75,18 +90,32 @@ Promotions Team
    - Explain threshold levels
    - Note latency time
 
+---
+
 ## Key Points to Highlight
 
-- Character-level / transformer-based detection
-- Real-time inference (50-500ms)
+- DistilBERT transformer-based detection
+- Real-time inference (50-500ms after warmup)
+- Containerized with Docker Compose
+- One-command deployment
 - No external API calls (local model)
 - Threshold-based risk classification
+
+---
 
 ## Troubleshooting During Demo
 
 | Issue | Fix |
 |-------|-----|
-| Slow first request | Model loading - wait 10-30s |
-| Backend not responding | Check terminal for errors |
-| CORS error | Verify both servers running |
+| Slow first request | Model loading - wait 3-6s |
+| Container not starting | Run `docker-compose logs` |
+| Backend not responding | Check `docker-compose ps` |
 | Result not showing | Check browser console |
+
+---
+
+## Stop Demo
+
+```bash
+docker-compose down
+```

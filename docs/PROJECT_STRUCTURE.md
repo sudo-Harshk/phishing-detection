@@ -3,10 +3,12 @@
 ```
 phishing-detection-final/
 ├── README.md                    # Project overview
+├── docker-compose.yml           # One-command deployment
 ├── .gitignore
 │
 ├── backend/                     # FastAPI server
-│   ├── README.md
+│   ├── Dockerfile               # Backend container
+│   ├── .dockerignore
 │   ├── requirements.txt         # Python dependencies
 │   ├── app/
 │   │   ├── main.py              # FastAPI app entry
@@ -25,12 +27,12 @@ phishing-detection-final/
 │   ├── assets/
 │   │   └── char_dictionary.json # Character vocabulary
 │   └── tests/
-│       ├── test_inference.py
-│       ├── test_model_load.py
-│       ├── test_preprocessing.py
-│       └── test_threshold_inference.py
+│       └── ...
 │
 ├── frontend/                    # React application
+│   ├── Dockerfile               # Frontend container (multi-stage)
+│   ├── nginx.conf               # Nginx SPA config
+│   ├── .dockerignore
 │   ├── package.json
 │   ├── vite.config.ts
 │   ├── index.html
@@ -38,8 +40,10 @@ phishing-detection-final/
 │       ├── App.tsx              # Root component
 │       ├── main.tsx             # Entry point
 │       ├── index.css            # Global styles
+│       ├── config/
+│       │   └── api.ts           # API URL configuration
 │       ├── pages/
-│       │   ├── Demo.tsx         # Demo page (legacy)
+│       │   ├── Demo.tsx         # Demo page
 │       │   └── DemoPage.tsx     # Active demo page
 │       └── components/
 │           ├── index.ts         # Component exports
@@ -54,11 +58,7 @@ phishing-detection-final/
 │           │   ├── EmailContentPanel.tsx
 │           │   └── AnalysisResultPanel.tsx
 │           ├── analysis/
-│           │   ├── AnalysisSkeleton.tsx
-│           │   ├── MetadataRow.tsx
-│           │   ├── PhishingProbabilityBar.tsx
-│           │   ├── ResultStatusIndicator.tsx
-│           │   └── SampleResultNotice.tsx
+│           │   └── ...
 │           ├── common/
 │           │   └── PanelHeader.tsx
 │           └── footer/
@@ -68,8 +68,11 @@ phishing-detection-final/
     ├── PRD.md                   # Product requirements
     ├── ARCHITECTURE.md          # System design
     ├── SETUP.md                 # Installation guide
+    ├── DOCKER.md                # Docker deployment
+    ├── DEPLOYMENT.md            # Deployment guide
     ├── API.md                   # API reference
     ├── DEMO_GUIDE.md            # Demo instructions
+    ├── TESTING.md               # Testing guide
     └── PROJECT_STRUCTURE.md     # This file
 ```
 
@@ -77,8 +80,21 @@ phishing-detection-final/
 
 | File | Purpose |
 |------|---------|
-| `backend/app/main.py` | FastAPI application entry point |
+| `docker-compose.yml` | One-command deployment |
+| `backend/Dockerfile` | Backend container image |
+| `frontend/Dockerfile` | Frontend container image |
+| `backend/app/main.py` | FastAPI application entry |
 | `backend/app/api/predict.py` | Prediction API endpoint |
 | `backend/app/core/hf_distilbert_inference.py` | Active inference engine |
+| `frontend/src/config/api.ts` | API URL configuration |
 | `frontend/src/components/layout/SecurityAnalysisConsole.tsx` | Main UI component |
 | `docs/PRD.md` | Product requirements document |
+
+## Docker Files
+
+| File | Purpose |
+|------|---------|
+| `docker-compose.yml` | Orchestrates frontend + backend |
+| `backend/Dockerfile` | Python 3.10 + TensorFlow + PyTorch |
+| `frontend/Dockerfile` | Multi-stage: Node build → Nginx serve |
+| `frontend/nginx.conf` | SPA routing configuration |

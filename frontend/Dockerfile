@@ -17,6 +17,10 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
+# Accept API URL as build argument (for docker-compose)
+ARG VITE_API_URL=http://localhost:8000
+ENV VITE_API_URL=$VITE_API_URL
+
 # Build production bundle
 RUN npm run build
 

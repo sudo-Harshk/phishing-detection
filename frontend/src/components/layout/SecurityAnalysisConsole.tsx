@@ -3,6 +3,7 @@ import MainLayout from "./MainLayout";
 import EmailContentPanel from "../panels/EmailContentPanel";
 import AnalysisResultPanel, { type AnalysisResult } from "../panels/AnalysisResultPanel";
 import FooterNotice from "../footer/FooterNotice";
+import { API_BASE_URL } from "../../config/api";
 
 export default function SecurityAnalysisConsole() {
     // State management - minimal as per Phase 4 rules
@@ -18,7 +19,7 @@ export default function SecurityAnalysisConsole() {
         setResult(null);
 
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/predict", {
+            const res = await fetch(`${API_BASE_URL}/api/predict`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text }),

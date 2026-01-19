@@ -1,12 +1,27 @@
 # Setup Guide
 
-## Prerequisites
+## Quick Start (Docker)
+
+Fastest way to get running:
+
+```bash
+docker-compose up --build
+```
+
+- **Frontend**: `http://localhost:3000`
+- **Backend**: `http://localhost:8000`
+
+---
+
+## Local Development Setup
+
+### Prerequisites
 
 - Python 3.10+
 - Node.js 18+
 - Git
 
-## Backend Setup
+### Backend
 
 ```bash
 cd backend
@@ -31,7 +46,7 @@ Backend runs at: `http://localhost:8000`
 
 Health check: `GET http://localhost:8000/health`
 
-## Frontend Setup
+### Frontend
 
 ```bash
 cd frontend
@@ -45,11 +60,15 @@ npm run dev
 
 Frontend runs at: `http://localhost:5173`
 
+---
+
 ## First Run Notes
 
 - DistilBERT model downloads automatically on first request (~250MB)
 - First prediction may take 10-30 seconds (model loading)
 - Subsequent predictions: ~100-500ms
+
+---
 
 ## Environment Requirements
 
@@ -58,6 +77,7 @@ Frontend runs at: `http://localhost:5173`
 - CPU-only (no GPU required)
 
 ### Dependencies
+
 | Package | Version |
 |---------|---------|
 | fastapi | 0.110.0 |
@@ -65,6 +85,8 @@ Frontend runs at: `http://localhost:5173`
 | tensorflow | 2.16.1 |
 | torch | 2.2.0 |
 | transformers | 4.36.2 |
+
+---
 
 ## Troubleshooting
 
@@ -81,8 +103,7 @@ uvicorn app.main:app --reload --port 8001
 **Model loading fails:**
 - Check internet connection (HuggingFace download)
 - Verify `models/chargru_advtrain_model.keras` exists
-- Check `assets/char_dictionary.json` exists
 
 **CORS errors:**
-- Ensure frontend runs on `localhost:5173`
-- Backend allows origins: `localhost:5173`, `127.0.0.1:5173`
+- Backend now allows all origins for Docker compatibility
+- For local dev, frontend should run on `localhost:5173`

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AnalysisCard, RiskBadge, ProbabilityGauge, LoadingSkeleton } from "../components";
+import { API_BASE_URL } from "../config/api";
 
 type Result = {
     label: string;
@@ -33,7 +34,7 @@ export default function Demo() {
         let errorMessage: string | null = null;
 
         try {
-            const res = await fetch("http://127.0.0.1:8000/api/predict", {
+            const res = await fetch(`${API_BASE_URL}/api/predict`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text }),

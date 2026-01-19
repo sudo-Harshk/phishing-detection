@@ -1,114 +1,117 @@
 # Deployment Guide
 
-## Local Deployment
+## Quick Deploy (Recommended)
 
-See [SETUP.md](./SETUP.md) for local development setup.
+Use Docker Compose for the easiest deployment:
+
+```bash
+docker-compose up --build
+```
+
+- **Frontend**: `http://localhost:3000`
+- **Backend**: `http://localhost:8000`
+
+> [!TIP]
+> This is the recommended approach for demos and deployments. No Python or Node.js setup required.
+
+---
+
+## Docker Commands
+
+| Command | Description |
+|---------|-------------|
+| `docker-compose up --build` | Build and start all services |
+| `docker-compose up -d` | Start in background |
+| `docker-compose down` | Stop all services |
+| `docker-compose logs -f` | View logs |
+| `docker-compose ps` | List running services |
+
+---
+
+## Local Development
+
+See [SETUP.md](./SETUP.md) for local development without Docker.
 
 ---
 
 ## Deploy to Another Machine
 
-### 1. Prerequisites on Target Machine
+### Option 1: Docker (Recommended)
 
-- Python 3.10+
-- Node.js 18+
-- Git
+**Requirements on target machine:**
+- Docker Desktop
 
-### 2. Transfer Project
-
-**Option A: Git Clone**
+**Steps:**
 ```bash
 git clone <repository-url>
 cd phishing-detection-final
+docker-compose up --build
 ```
 
-**Option B: Copy Files**
-- Copy entire project folder
-- Exclude: `node_modules/`, `venv/`, `__pycache__/`
+### Option 2: Manual Setup
 
-### 3. Backend Setup
+**Requirements:**
+- Python 3.10+
+- Node.js 18+
+
+**Steps:**
 
 ```bash
+# Backend
 cd backend
-
-# Create virtual environment
 python -m venv venv
-
-# Activate
 venv\Scripts\activate      # Windows
-source venv/bin/activate   # Unix
-
-# Install dependencies
 pip install -r requirements.txt
-```
 
-### 4. Frontend Setup
-
-```bash
+# Frontend
 cd frontend
 npm install
 ```
 
-### 5. Start Servers
+**Start servers:**
 
-**Terminal 1 (Backend):**
 ```bash
-cd backend
-venv\Scripts\activate
+# Terminal 1 (Backend)
 uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
 
-**Terminal 2 (Frontend):**
-```bash
-cd frontend
+# Terminal 2 (Frontend)
 npm run dev -- --host
 ```
-
-### 6. Access Application
-
-- Local: `http://localhost:5173`
-- Network: `http://<machine-ip>:5173`
 
 ---
 
 ## Required Files
-
-Ensure these model files are included:
 
 | File | Location | Size |
 |------|----------|------|
 | `chargru_advtrain_model.keras` | `backend/models/` | ~10MB |
 | `char_dictionary.json` | `backend/assets/` | ~2KB |
 
-DistilBERT model auto-downloads from HuggingFace (~250MB).
+> [!NOTE]
+> DistilBERT model auto-downloads from HuggingFace (~250MB) on first run.
 
 ---
 
 ## Production Considerations
 
-### Backend
+### With Docker
 
 ```bash
-# Production server (not for development)
+# Run in detached mode with restart policy
+docker-compose up -d
+```
+
+Containers automatically restart on failure.
+
+### Without Docker
+
+```bash
+# Backend - production server
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1
-```
 
-### Frontend
-
-```bash
-# Build for production
+# Frontend - build and serve
 npm run build
-
-# Serve with static server
 npm run preview
-```
-
-### Environment Variables (Optional)
-
-Create `.env` in backend folder:
-```env
-MODEL_PATH=./models/chargru_advtrain_model.keras
-DEBUG=false
 ```
 
 ---
@@ -117,7 +120,8 @@ DEBUG=false
 
 | Issue | Solution |
 |-------|----------|
-| Model download fails | Check internet, retry |
-| Port conflict | Use different ports |
-| Memory error | Ensure 4GB+ RAM available |
-| Module not found | Verify venv activated |
+| Docker not starting | Ensure Docker Desktop is running |
+| Port conflict | Check ports 3000, 8000 are free |
+| Model download fails | Check internet connectivity |
+| Memory error | Allocate 4GB+ RAM to Docker |
+| Module not found | Verify venv activated (local dev) |
