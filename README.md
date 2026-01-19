@@ -4,6 +4,18 @@ MTech Final Year Project — Character-level phishing detection using deep learn
 
 ## Quick Start
 
+### Option 1: Docker (Recommended)
+
+```bash
+cd backend
+docker build -t phishing-backend .
+docker run -p 8000:8000 phishing-backend
+```
+
+Backend runs at `http://localhost:8000` — no Python setup needed!
+
+### Option 2: Local Development
+
 ```bash
 # Backend
 cd backend
@@ -27,6 +39,7 @@ Open `http://localhost:5173`
 | [PRD](docs/PRD.md) | Product requirements |
 | [Architecture](docs/ARCHITECTURE.md) | System design |
 | [Setup](docs/SETUP.md) | Installation guide |
+| [Docker](docs/DOCKER.md) | Docker deployment |
 | [API](docs/API.md) | API reference |
 | [Demo Guide](docs/DEMO_GUIDE.md) | Demo instructions |
 | [Testing](docs/TESTING.md) | Testing guide |
