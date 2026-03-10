@@ -109,9 +109,9 @@ export default function NeuralNetworkAnimatedBeam() {
                         fromRef={fromRef}
                         toRef={toRef}
                         dotted
-                        duration={3}
-                        delay={(i * 5) + j}
-                        repeatDelay={10}
+                        duration={0.2}
+                        delay={(i * 5 + j) * 0.2}
+                        repeatDelay={9.8}
                         curvature={(i - 1) * 15 - (j - 2) * 5}
                         gradientStartColor={inputGradient.start}
                         gradientStopColor={inputGradient.stop}
@@ -126,9 +126,9 @@ export default function NeuralNetworkAnimatedBeam() {
                         fromRef={fromRef}
                         toRef={toRef}
                         dotted
-                        duration={3}
-                        delay={15 + (i * 5) + j}
-                        repeatDelay={10}
+                        duration={0.2}
+                        delay={3.0 + (i * 5 + j) * 0.2} // Starts completely after wave 1
+                        repeatDelay={9.8} // Constant 10s master cycle
                         curvature={(i - 2) * 10 - (j - 2) * 10}
                         gradientStartColor={hiddenGradient.start}
                         gradientStopColor={hiddenGradient.stop}
@@ -142,10 +142,9 @@ export default function NeuralNetworkAnimatedBeam() {
                     fromRef={fromRef}
                     toRef={outRef1}
                     dotted
-                    reverse
-                    duration={3}
-                    delay={40 + i}
-                    repeatDelay={10}
+                    duration={0.5}
+                    delay={8.2} // Starts completely after wave 2 is finished, equally simultaneously
+                    repeatDelay={9.5} // Constant 10s master cycle
                     curvature={(-30 + i * 15) * 1.5}
                     endYOffset={i * -15 + 30}
                     gradientStartColor={outputGradient.start}
