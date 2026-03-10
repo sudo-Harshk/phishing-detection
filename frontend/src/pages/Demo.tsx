@@ -19,7 +19,6 @@ export default function Demo() {
     const [error, setError] = useState<string | null>(null);
     const [hasAnalyzed, setHasAnalyzed] = useState(false);
 
-    // Minimum time to display the loading skeleton (prevents flashing)
     const MIN_LOADING_TIME = 700;
 
     async function handleAnalyze() {
@@ -46,7 +45,6 @@ export default function Demo() {
             errorMessage = "Unable to connect to backend";
         }
 
-        // Ensure skeleton is visible for at least MIN_LOADING_TIME
         const elapsed = performance.now() - startTime;
         const remaining = MIN_LOADING_TIME - elapsed;
 
@@ -54,7 +52,6 @@ export default function Demo() {
             await new Promise(resolve => setTimeout(resolve, remaining));
         }
 
-        // Now update the UI
         if (resultData) {
             setResult(resultData);
         }
@@ -66,7 +63,6 @@ export default function Demo() {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
-            {/* LEFT PANE: Input */}
             <div className="space-y-5">
                 <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -124,7 +120,6 @@ export default function Demo() {
                     )}
                 </div>
 
-                {/* Error Message */}
                 <AnimatePresence>
                     {error && (
                         <motion.div
@@ -142,9 +137,7 @@ export default function Demo() {
                 </AnimatePresence>
             </div>
 
-            {/* RIGHT PANE: Results */}
             <div className="lg:pt-7">
-                {/* Empty state */}
                 {!hasAnalyzed && !loading && (
                     <div className="h-full flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50 p-8 min-h-[320px]">
                         <div className="text-center">
@@ -163,28 +156,22 @@ export default function Demo() {
                     </div>
                 )}
 
-                {/* Loading state */}
                 {loading && <LoadingSkeleton />}
 
-                {/* Results */}
                 <AnimatePresence mode="wait">
                     {result && !loading && (
                         <AnalysisCard>
-                            {/* Hero Risk Badge */}
                             <div className="mb-6">
                                 <RiskBadge level={result.risk_level} />
                             </div>
 
-                            {/* Probability Gauge */}
                             <ProbabilityGauge
                                 probability={result.phishing_probability}
                                 className="mb-6"
                             />
 
-                            {/* Divider */}
                             <div className="border-t border-gray-100 my-5" />
 
-                            {/* Metadata */}
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between text-sm">
                                     <span className="text-gray-500 font-medium">Classification</span>

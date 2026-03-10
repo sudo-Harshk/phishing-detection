@@ -1,7 +1,6 @@
 export default function AnalysisSkeleton() {
     return (
         <div className="animate-pulse space-y-5">
-            {/* Status Card Skeleton */}
             <div className="flex items-center gap-4 p-6 bg-gray-100 rounded-xl">
                 <div className="flex-shrink-0 w-14 h-14 bg-gray-200 rounded-full" />
                 <div className="space-y-2 flex-1">
@@ -10,7 +9,6 @@ export default function AnalysisSkeleton() {
                 </div>
             </div>
 
-            {/* Probability Bar Skeleton */}
             <div className="space-y-2">
                 <div className="flex justify-between">
                     <div className="h-4 bg-gray-200 rounded w-28" />
@@ -24,16 +22,13 @@ export default function AnalysisSkeleton() {
                 </div>
             </div>
 
-            {/* Divider */}
             <div className="border-t border-gray-100" />
 
-            {/* Metadata Skeleton */}
             <div className="flex gap-4">
                 <div className="h-4 bg-gray-200 rounded w-28" />
                 <div className="h-4 bg-gray-200 rounded w-20" />
             </div>
 
-            {/* Loading Message */}
             <p className="text-xs text-gray-400 text-center mt-4">
                 Analyzing email security…
             </p>

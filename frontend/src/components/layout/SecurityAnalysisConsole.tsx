@@ -6,13 +6,11 @@ import FooterNotice from "../footer/FooterNotice";
 import { API_BASE_URL } from "../../config/api";
 
 export default function SecurityAnalysisConsole() {
-    // State management - minimal as per Phase 4 rules
     const [text, setText] = useState("");
     const [result, setResult] = useState<AnalysisResult | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Analyze handler
     const handleAnalyze = async () => {
         setIsLoading(true);
         setError(null);
@@ -43,7 +41,6 @@ export default function SecurityAnalysisConsole() {
         }
     };
 
-    // Clear handler
     const handleClear = () => {
         setText("");
         setResult(null);
@@ -52,7 +49,6 @@ export default function SecurityAnalysisConsole() {
 
     return (
         <div className="min-h-screen flex flex-col" style={{ background: "linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%)" }}>
-            {/* Header */}
             <header className="border-b border-gray-200 bg-white/80 backdrop-blur-sm">
                 <div className="max-w-6xl mx-auto px-6 py-5">
                     <h1 className="text-lg font-semibold text-gray-900 tracking-tight">
@@ -64,7 +60,6 @@ export default function SecurityAnalysisConsole() {
                 </div>
             </header>
 
-            {/* Main Content */}
             <main className="flex-1 max-w-6xl mx-auto px-6 py-10 w-full">
                 <MainLayout>
                     <EmailContentPanel
@@ -82,7 +77,6 @@ export default function SecurityAnalysisConsole() {
                 </MainLayout>
             </main>
 
-            {/* Footer */}
             <FooterNotice />
         </div>
     );

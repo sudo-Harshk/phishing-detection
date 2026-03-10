@@ -8,9 +8,6 @@ app = FastAPI(
     version="1.0"
 )
 
-# CORS middleware for frontend
-# Allow all origins for Docker networking flexibility
-# In production, restrict to specific domains
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

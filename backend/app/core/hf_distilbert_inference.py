@@ -29,7 +29,6 @@ def predict_email_distilbert(text: str) -> dict:
 
     phishing_prob = float(probs[1])
 
-    # Decision thresholds (demo-safe)
     if phishing_prob >= 0.85:
         label = "Phishing"
         risk = "High"

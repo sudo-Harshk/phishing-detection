@@ -1,21 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
-    { label: "Overview", href: "#overview", active: true },
-    { label: "Architecture", href: "#architecture", active: false },
-    { label: "Features", href: "#features", active: false },
-    { label: "Demo", href: "#demo", active: false },
+    { label: "Overview", href: "#overview" },
+    { label: "Architecture", href: "#architecture" },
+    { label: "Features", href: "#features" },
+    { label: "Demo", href: "#demo" },
 ];
 
 export default function LandingPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [activeSection, setActiveSection] = useState("");
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = NAV_LINKS.map(link => link.href.substring(1));
+            const scrollPosition = window.scrollY + 100;
+
+            if (window.innerHeight + Math.round(window.scrollY) >= document.body.offsetHeight - 50) {
+                setActiveSection(sections[sections.length - 1]);
+                return;
+            }
+            for (const section of [...sections].reverse()) {
+                const element = document.getElementById(section);
+                if (element && element.offsetTop <= scrollPosition) {
+                    setActiveSection(section);
+                    return;
+                }
+            }
+            setActiveSection(sections[0]);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     return (
         <div className="min-h-screen bg-white text-[#1d1d1f] font-sans tracking-tight">
-            <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200/60">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
                 <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 lg:px-8">
-                    <span className="text-[0.9375rem] font-semibold text-[#1d1d1f] select-none">
-                        Character-Level Phishing Detection System
+                    <span className="text-[0.9375rem] font-semibold text-[#1d1d1f] select-none truncate pr-4">
+                        <span className="hidden sm:inline">Character-Level Phishing Detection System</span>
+                        <span className="sm:hidden">Phishing Detection</span>
                     </span>
 
                     <ul className="hidden md:flex items-center gap-8">
@@ -23,8 +50,8 @@ export default function LandingPage() {
                             <li key={link.label}>
                                 <a
                                     href={link.href}
-                                    className={`text-sm transition-colors duration-200 ${link.active
-                                        ? "text-[#1d1d1f] font-medium border-b-[1.5px] border-[#1d1d1f] pb-0.5"
+                                    className={`text-sm font-medium transition-colors duration-200 ${activeSection === link.href.substring(1)
+                                        ? "text-[#1d1d1f] border-b-[1.5px] border-[#1d1d1f] pb-0.5"
                                         : "text-gray-500 hover:text-[#1d1d1f]"
                                         }`}
                                 >
@@ -59,9 +86,9 @@ export default function LandingPage() {
                                     <a
                                         href={link.href}
                                         onClick={() => setMobileMenuOpen(false)}
-                                        className={`block text-sm py-1 transition-colors duration-200 ${link.active
-                                            ? "text-[#1d1d1f] font-medium"
-                                            : "text-gray-500 hover:text-[#1d1d1f]"
+                                        className={`block text-sm py-2 font-medium transition-colors duration-200 ${activeSection === link.href.substring(1)
+                                            ? "text-[#1d1d1f]"
+                                            : "text-gray-600 hover:text-[#1d1d1f]"
                                             }`}
                                     >
                                         {link.label}

@@ -25,16 +25,13 @@ export default function AnalysisResultPanel({ result, isLoading, error }: Analys
                 subtitle={isLoading ? "Analyzing..." : "Email security assessment"}
             />
 
-            {/* Analysis Content - Distribute evenly */}
             <div className="flex-1 flex flex-col justify-between">
-                {/* Loading State - Skeleton */}
                 {isLoading && (
                     <div className="transition-opacity duration-200 ease-out">
                         <AnalysisSkeleton />
                     </div>
                 )}
 
-                {/* Error State */}
                 {error && !isLoading && (
                     <div className="flex-1 flex items-center justify-center transition-opacity duration-200 ease-out">
                         <div className="text-center">
@@ -48,7 +45,6 @@ export default function AnalysisResultPanel({ result, isLoading, error }: Analys
                     </div>
                 )}
 
-                {/* Empty State */}
                 {!result && !isLoading && !error && (
                     <div className="flex-1 flex items-center justify-center rounded-lg bg-gray-50 border border-gray-100 transition-opacity duration-200 ease-out">
                         <p className="text-gray-400 text-sm font-medium">
@@ -57,27 +53,21 @@ export default function AnalysisResultPanel({ result, isLoading, error }: Analys
                     </div>
                 )}
 
-                {/* Result State - Fades in */}
                 {result && !isLoading && !error && (
                     <div className="transition-opacity duration-200 ease-out opacity-100">
                         <div className="space-y-5">
-                            {/* Hero: Risk Status */}
                             <ResultStatusIndicator
                                 riskLevel={result.risk_level}
                             />
 
-                            {/* Probability Bar */}
                             <PhishingProbabilityBar
                                 probability={result.phishing_probability * 100}
                             />
                         </div>
 
-                        {/* Bottom Section */}
                         <div className="pt-5 mt-auto">
-                            {/* Softer Divider */}
                             <div className="border-t border-gray-100/60 mb-5" />
 
-                            {/* Metadata */}
                             <MetadataRow
                                 label={result.label}
                                 latencyMs={result.latency_ms}

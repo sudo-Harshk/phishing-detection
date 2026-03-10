@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 from app.config import ASSETS_DIR, MAX_INPUT_LENGTH
 
 
-# Load character dictionary once
 with open(ASSETS_DIR / "char_dictionary.json", "r", encoding="utf-8") as f:
     CHAR_DICT = json.load(f)
 
@@ -53,5 +52,4 @@ def preprocess_email(text: str) -> np.ndarray:
 
     seq = text_to_sequence(text)
 
-    # Model expects batch dimension
     return np.expand_dims(seq, axis=0)

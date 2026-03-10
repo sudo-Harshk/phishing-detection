@@ -6,10 +6,6 @@ interface AnalysisCardProps {
     className?: string;
 }
 
-/**
- * Task 5: Analysis Card Surface
- * Floating card container with rounded corners, soft shadows, and subtle gradient.
- */
 export default function AnalysisCard({ children, className = "" }: AnalysisCardProps) {
     return (
         <motion.div
@@ -30,7 +26,6 @@ export default function AnalysisCard({ children, className = "" }: AnalysisCardP
                 boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.12), 0 8px 20px -8px rgba(0, 0, 0, 0.08)",
             }}
         >
-            {/* Subtle gradient overlay for depth */}
             <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
