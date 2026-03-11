@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import NeuralNetworkAnimatedBeam from "../components/NeuralNetworkAnimatedBeam";
+import SystemArchitectureSvg from "@/assets/System.svg?url";
 
 const NAV_LINKS = [
     { label: "Overview", href: "#overview" },
@@ -198,8 +199,8 @@ export default function LandingPage() {
                 </h2>
                 <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm w-full">
                     <img
-                        src="/architecture-flow.png"
-                        alt="System Architecture Diagram"
+                        src={SystemArchitectureSvg}
+                        alt="Character-Level Phishing Detection System Architecture"
                         className="w-full h-auto object-contain bg-[#f8f9fb]"
                     />
                 </div>

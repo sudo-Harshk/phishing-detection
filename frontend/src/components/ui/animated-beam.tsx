@@ -18,6 +18,7 @@ export interface AnimatedBeamProps {
     delay?: number;
     duration?: number;
     repeatDelay?: number;
+    runOnce?: boolean;
     startXOffset?: number;
     startYOffset?: number;
     endXOffset?: number;
@@ -35,6 +36,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
     duration = Math.random() * 3 + 4,
     delay = 0,
     repeatDelay = 0,
+    runOnce = false,
     pathColor = "gray",
     pathWidth = 2,
     pathOpacity = 0.2,
@@ -102,8 +104,14 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
 
         updatePath();
 
+        // Delayed recalc for edge nodes (H1_1→H2_1, H1_5→H2_5) that may layout late
+        const t1 = setTimeout(updatePath, 100);
+        const t2 = setTimeout(updatePath, 400);
+
         return () => {
             resizeObserver.disconnect();
+            clearTimeout(t1);
+            clearTimeout(t2);
         };
     }, [
         containerRef,
@@ -122,7 +130,8 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
             width={svgDimensions.width}
             height={svgDimensions.height}
             xmlns="http://www.w3.org/2000/svg"
-            className={`pointer-events-none absolute left-0 top-0 transform-gpu stroke-2 z-0 ${className || ""}`}
+            className={`pointer-events-none absolute left-0 top-0 transform-gpu stroke-2 z-0 overflow-visible ${className || ""}`}
+            style={{ overflow: 'visible' }}
             viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`}
         >
             <path
@@ -161,9 +170,10 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
                     transition={{
                         delay,
                         duration,
-                        ease: "linear",
-                        repeat: Infinity,
-                        repeatDelay,
+                        ease: "easeInOut",
+                        ...(runOnce
+                            ? {}
+                            : { repeat: Infinity, repeatType: "loop", repeatDelay }),
                     }}
                 >
                     <stop stopColor={gradientStartColor} stopOpacity="0"></stop>

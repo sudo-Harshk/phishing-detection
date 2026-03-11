@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import React, { forwardRef, useRef } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { AnimatedBeam } from '@/components/ui/animated-beam';
 
@@ -12,7 +12,7 @@ const Circle = forwardRef<
         <div
             ref={ref}
             className={cn(
-                'z-10 flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white p-2 shadow-sm',
+                'z-10 flex h-12 w-12 items-center justify-center rounded-full border p-2 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg',
                 className,
             )}
         >
@@ -53,12 +53,29 @@ export default function NeuralNetworkAnimatedBeam() {
     const hiddenGradient = { start: '#a78bfa', stop: '#d948ae' };
     const outputGradient = { start: '#fb923c', stop: '#f43f5e' };
 
+    const duration = 1.2;
+    const neuronGap = 0.15;
+    const layerGap = 0.3;
+    const cycleEndPause = 1.5;      
+    const neuronCycle = duration + neuronGap;
+    const wave1End = 2 * neuronCycle + duration + layerGap;
+    const wave2End = wave1End + 4 * neuronCycle + duration + layerGap;
+    const totalCycleDurationSec = wave2End + 4 * neuronCycle + duration + cycleEndPause;
+
+    const [cycle, setCycle] = useState(0);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCycle((c) => c + 1);
+        }, totalCycleDurationSec * 1000);
+        return () => clearInterval(interval);
+    }, [totalCycleDurationSec]);
+
     return (
-        <div className="relative flex h-full w-full items-center justify-center overflow-visible" ref={containerRef}>
+        <div className="relative flex h-full w-full items-center justify-center overflow-visible rounded-xl bg-gradient-to-b from-slate-50/80 to-white" ref={containerRef}>
             <div className='flex h-full w-full flex-row items-stretch justify-center md:justify-end gap-8 md:gap-16 lg:gap-24 mb-16'>
                 <div className='flex flex-col items-center justify-center gap-12 relative'>
                     {inputRefs.map((ref, i) => (
-                        <Circle ref={ref} key={`in-${i}`} className='bg-blue-50 border-blue-200'>
+                        <Circle ref={ref} key={`in-${i}`} className='bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200'>
                             <span className='text-sm text-blue-900 font-mono'>X<sub>{i + 1}</sub></span>
                         </Circle>
                     ))}
@@ -69,7 +86,7 @@ export default function NeuralNetworkAnimatedBeam() {
                 </div>
                 <div className='flex flex-col items-center justify-center gap-6 relative'>
                     {hidden1Refs.map((ref, i) => (
-                        <Circle ref={ref} key={`h1-${i}`} className='bg-indigo-50 border-indigo-200'>
+                        <Circle ref={ref} key={`h1-${i}`} className='bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200'>
                             <span className='text-sm text-indigo-900 font-mono'>H1<sub>{i + 1}</sub></span>
                         </Circle>
                     ))}
@@ -80,7 +97,7 @@ export default function NeuralNetworkAnimatedBeam() {
                 </div>
                 <div className='flex flex-col items-center justify-center gap-6 relative'>
                     {hidden2Refs.map((ref, i) => (
-                        <Circle ref={ref} key={`h2-${i}`} className='bg-pink-50 border-pink-200'>
+                        <Circle ref={ref} key={`h2-${i}`} className='bg-gradient-to-br from-pink-50 to-pink-100 border-pink-200'>
                             <span className='text-sm text-pink-900 font-mono'>H2<sub>{i + 1}</sub></span>
                         </Circle>
                     ))}
@@ -91,7 +108,7 @@ export default function NeuralNetworkAnimatedBeam() {
                 </div>
                 <div className='flex flex-col items-center justify-center gap-12 relative'>
                     {outputRefs.map((ref, i) => (
-                        <Circle ref={ref} key={`out-${i}`} className='bg-rose-50 border-rose-200 h-16 w-16'>
+                        <Circle ref={ref} key={`out-${i}`} className='bg-gradient-to-br from-rose-50 to-rose-100 border-rose-200 h-16 w-16'>
                             <span className='text-base font-bold text-rose-900 font-mono'>Y</span>
                         </Circle>
                     ))}
@@ -104,53 +121,66 @@ export default function NeuralNetworkAnimatedBeam() {
             {inputRefs.map((fromRef, i) =>
                 hidden1Refs.map((toRef, j) => (
                     <AnimatedBeam
-                        key={`in-to-h1-${i}-${j}`}
+                        key={`in-to-h1-${i}-${j}-${cycle}`}
                         containerRef={containerRef}
                         fromRef={fromRef}
                         toRef={toRef}
                         dotted
-                        duration={0.2}
-                        delay={(i * 5 + j) * 0.2}
-                        repeatDelay={9.8}
-                        curvature={(i - 1) * 15 - (j - 2) * 5}
+                        duration={duration}
+                        delay={i * neuronCycle}
+                        runOnce
+                        pathColor={inputGradient.start}
+                        curvature={Math.max(-20, Math.min(20, (i - 1) * 10 - (j - 2) * 4))}
                         gradientStartColor={inputGradient.start}
                         gradientStopColor={inputGradient.stop}
                     />
                 ))
             )}
             {hidden1Refs.map((fromRef, i) =>
-                hidden2Refs.map((toRef, j) => (
+                hidden2Refs.map((toRef, j) => {
+                        const baseCurvature = (i - 2) * 8 - (j - 2) * 8;
+                    const curvature = (i === j && (i === 0 || i === 4))
+                        ? (i === 0 ? 12 : -12)
+                        : Math.max(-25, Math.min(25, baseCurvature));
+                    return (
+                        <AnimatedBeam
+                            key={`h1-to-h2-${i}-${j}-${cycle}`}
+                            containerRef={containerRef}
+                            fromRef={fromRef}
+                            toRef={toRef}
+                            dotted
+                            duration={duration}
+                            delay={wave1End + i * neuronCycle}
+                            runOnce
+                            pathColor={hiddenGradient.start}
+                            curvature={curvature}
+                            gradientStartColor={hiddenGradient.start}
+                            gradientStopColor={hiddenGradient.stop}
+                        />
+                    );
+                })
+            )}
+            {hidden2Refs.map((fromRef, i) => {
+                const baseCurvature = (-30 + i * 15) * 1.5;
+                const curvature = i === 2 ? 10 : baseCurvature;
+                return (
                     <AnimatedBeam
-                        key={`h1-to-h2-${i}-${j}`}
+                        key={`h2-to-out-${i}-${cycle}`}
                         containerRef={containerRef}
                         fromRef={fromRef}
-                        toRef={toRef}
+                        toRef={outRef1}
                         dotted
-                        duration={0.2}
-                        delay={3.0 + (i * 5 + j) * 0.2} // Starts completely after wave 1
-                        repeatDelay={9.8} // Constant 10s master cycle
-                        curvature={(i - 2) * 10 - (j - 2) * 10}
-                        gradientStartColor={hiddenGradient.start}
-                        gradientStopColor={hiddenGradient.stop}
+                        duration={duration}
+                        delay={wave2End + i * neuronCycle}
+                        runOnce
+                        pathColor={outputGradient.start}
+                        curvature={curvature}
+                        endYOffset={i * -15 + 30}
+                        gradientStartColor={outputGradient.start}
+                        gradientStopColor={outputGradient.stop}
                     />
-                ))
-            )}
-            {hidden2Refs.map((fromRef, i) => (
-                <AnimatedBeam
-                    key={`h2-to-out-${i}`}
-                    containerRef={containerRef}
-                    fromRef={fromRef}
-                    toRef={outRef1}
-                    dotted
-                    duration={0.5}
-                    delay={8.2} // Starts completely after wave 2 is finished, equally simultaneously
-                    repeatDelay={9.5} // Constant 10s master cycle
-                    curvature={(-30 + i * 15) * 1.5}
-                    endYOffset={i * -15 + 30}
-                    gradientStartColor={outputGradient.start}
-                    gradientStopColor={outputGradient.stop}
-                />
-            ))}
+                );
+            })}
         </div>
     );
 }
