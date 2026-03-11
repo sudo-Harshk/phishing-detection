@@ -29,7 +29,7 @@ export default function AnalysisSkeleton() {
                 <div className="h-4 bg-gray-200 rounded w-20" />
             </div>
 
-            <p className="text-xs text-gray-400 text-center mt-4">
+            <p className="text-xs text-slate-500 text-center mt-4">
                 Analyzing email security…
             </p>
         </div>

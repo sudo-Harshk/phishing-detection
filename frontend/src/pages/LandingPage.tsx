@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import NeuralNetworkAnimatedBeam from "../components/NeuralNetworkAnimatedBeam";
 import SystemArchitectureSvg from "@/assets/System.svg?url";
 
@@ -8,6 +9,8 @@ const NAV_LINKS = [
     { label: "Features", href: "#features" },
     { label: "Demo", href: "#demo" },
 ];
+
+const SECTION_MAX_WIDTH = "max-w-6xl";
 
 export default function LandingPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -40,32 +43,40 @@ export default function LandingPage() {
 
     return (
         <div className="min-h-screen bg-white text-[#1d1d1f] font-sans tracking-tight">
+            <a href="#overview" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-6 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Skip to content
+            </a>
             <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 lg:px-8">
+                <div className={`${SECTION_MAX_WIDTH} mx-auto flex items-center justify-between px-6 py-4 lg:px-8`}>
                     <span className="text-[0.9375rem] font-semibold text-[#1d1d1f] select-none truncate pr-4">
                         <span className="hidden sm:inline">Character-Level Phishing Detection System</span>
                         <span className="sm:hidden">Phishing Detection</span>
                     </span>
 
-                    <ul className="hidden md:flex items-center gap-8">
-                        {NAV_LINKS.map((link) => (
-                            <li key={link.label}>
-                                <a
-                                    href={link.href}
-                                    className={`text-sm font-medium transition-colors duration-200 ${activeSection === link.href.substring(1)
-                                        ? "text-[#1d1d1f] border-b-[1.5px] border-[#1d1d1f] pb-0.5"
-                                        : "text-gray-500 hover:text-[#1d1d1f]"
-                                        }`}
-                                >
-                                    {link.label}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="hidden md:flex items-center gap-6">
+                        <span className="text-xs text-slate-400 font-medium tabular-nums" aria-live="polite">
+                            {NAV_LINKS.findIndex((l) => l.href.substring(1) === activeSection) + 1 || 1} of {NAV_LINKS.length}
+                        </span>
+                        <ul className="flex items-center gap-8">
+                            {NAV_LINKS.map((link) => (
+                                <li key={link.label}>
+                                    <a
+                                        href={link.href}
+                                        className={`text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:rounded ${activeSection === link.href.substring(1)
+                                            ? "text-[#1d1d1f] border-b-[1.5px] border-[#1d1d1f] pb-0.5"
+                                            : "text-slate-600 hover:text-[#1d1d1f]"
+                                            }`}
+                                    >
+                                        {link.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
 
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden p-2 -mr-2 text-slate-500 hover:text-slate-900 transition-colors"
+                        className="md:hidden p-2 -mr-2 text-slate-500 hover:text-slate-900 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded"
                         aria-label="Toggle menu"
                     >
                         {mobileMenuOpen ? (
@@ -82,7 +93,10 @@ export default function LandingPage() {
 
                 {mobileMenuOpen && (
                     <div className="md:hidden border-t border-slate-200/60 bg-white/95 backdrop-blur-lg">
-                        <ul className="flex flex-col px-6 py-4 gap-3">
+                        <p className="px-6 pt-4 pb-2 text-xs text-slate-400 font-medium tabular-nums" aria-live="polite">
+                            Section {NAV_LINKS.findIndex((l) => l.href.substring(1) === activeSection) + 1 || 1} of {NAV_LINKS.length}
+                        </p>
+                        <ul className="flex flex-col px-6 py-2 gap-3">
                             {NAV_LINKS.map((link) => (
                                 <li key={link.label}>
                                     <a
@@ -102,35 +116,36 @@ export default function LandingPage() {
                 )}
             </nav>
 
-            <main className="max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-24 md:pt-28 md:pb-32">
+            <main className={`relative ${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 pt-20 pb-16 md:pt-28 md:pb-20`}>
+                <div className="absolute inset-0 -z-10 bg-gradient-to-b from-indigo-50/40 via-white to-white pointer-events-none" aria-hidden />
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
-                    <div className="flex-1 max-w-xl">
-                        <p className="text-sm text-slate-500 tracking-wide mb-4">
-                            Headline
+                    <div className="flex-1 max-w-xl space-y-4">
+                        <p className="text-sm text-indigo-600 font-medium tracking-wide uppercase">
+                            AI-Powered Security Research
                         </p>
 
-                        <h1 className="text-5xl md:text-6xl font-bold tracking-tighter leading-tight text-[#1d1d1f] mb-6">
+                        <h1 className="text-5xl md:text-6xl font-bold tracking-tighter leading-tight text-[#1d1d1f]">
                             Detect Phishing Emails&nbsp;with Deep Learning
                         </h1>
-                        <p className="text-lg text-slate-600 leading-relaxed max-w-lg mb-10">
+                        <p className="text-lg text-slate-600 leading-relaxed max-w-lg">
                             A research platform that analyzes email text using advanced neural
                             networks to identify phishing attacks in real time.
                         </p>
 
-                        <div className="flex flex-wrap items-center gap-4">
-                            <a
-                                href="http://localhost:5173/analyze"
-                                className="inline-flex items-center gap-2 px-7 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-sm font-medium rounded-full shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200 hover:-translate-y-0.5"
+                        <div className="flex flex-wrap items-center gap-4 pt-2">
+                            <Link
+                                to="/analyze"
+                                className="inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white text-sm font-semibold rounded-full shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.841m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
                                 </svg>
                                 Launch Email Analyzer
-                            </a>
+                            </Link>
 
                             <a
                                 href="#architecture"
-                                className="inline-flex items-center gap-2 px-7 py-3 text-sm font-medium text-slate-700 border border-slate-300 hover:border-slate-400 rounded-full hover:bg-white transition-all duration-200 hover:-translate-y-0.5"
+                                className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-medium text-slate-700 border border-slate-300 hover:border-slate-400 rounded-full hover:bg-slate-50 transition-all duration-200 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
                                 Explore Architecture
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -138,6 +153,7 @@ export default function LandingPage() {
                                 </svg>
                             </a>
                         </div>
+                        <p className="mt-4 text-xs text-slate-500">No signup required — try it instantly</p>
                     </div>
 
                     <div className="flex-1 w-full max-w-lg lg:max-w-none">
@@ -146,15 +162,15 @@ export default function LandingPage() {
                 </div>
             </main>
 
-            <section id="overview" className="max-w-5xl mx-auto px-6 lg:px-8 py-24 border-t border-gray-100">
+            <section id="overview" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 border-t border-gray-100`}>
                 <div className="text-center mb-16">
-                    <p className="text-sm font-medium text-gray-500 mb-2 uppercase tracking-wider">
+                    <p className="text-sm font-medium text-slate-600 mb-2 uppercase tracking-wider">
                         Research Overview
                     </p>
                     <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-4">
                         Research Objective
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
                         The system analyzes raw email content and predicts whether the message is
                         legitimate or a phishing attempt.
                     </p>
@@ -193,10 +209,19 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section id="architecture" className="max-w-4xl mx-auto px-6 lg:px-8 py-24">
-                <h2 className="text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-8 text-center bg-white">
-                    System Architecture
-                </h2>
+            <section id="architecture" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 border-t border-gray-100`}>
+                <div className="text-center mb-10">
+                    <p className="text-sm font-medium text-slate-600 mb-2 uppercase tracking-wider">
+                        How It Works
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-4">
+                        System Architecture
+                    </h2>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Email content flows from input through the backend API to deep learning models,
+                        with results displayed in the web interface.
+                    </p>
+                </div>
                 <div className="rounded-2xl border border-gray-200 overflow-hidden bg-white shadow-sm w-full">
                     <img
                         src={SystemArchitectureSvg}
@@ -206,13 +231,21 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section id="features" className="max-w-5xl mx-auto px-6 lg:px-8 py-24 border-t border-gray-100">
-                <h2 className="text-3xl font-semibold tracking-tight text-[#1d1d1f] mb-10 text-center">
-                    Core Features
-                </h2>
+            <section id="features" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 border-t border-gray-100`}>
+                <div className="text-center mb-10">
+                    <p className="text-sm font-medium text-slate-600 mb-2 uppercase tracking-wider">
+                        Capabilities
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-4">
+                        Core Features
+                    </h2>
+                    <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                        Key capabilities that power the character-level phishing detection system.
+                    </p>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center">
                             <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -226,7 +259,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center">
                             <svg className="w-5 h-5 text-violet-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
@@ -240,7 +273,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
                             <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
@@ -254,7 +287,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
                             <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
@@ -270,39 +303,47 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section id="demo" className="max-w-3xl mx-auto px-6 lg:px-8 py-24 text-center">
-                <p className="text-sm font-medium text-gray-500 mb-2 uppercase tracking-wider">
-                    Demo
-                </p>
-                <h2 className="text-3xl font-semibold tracking-tight text-gray-900 mb-4">
-                    Try the Email Detection Demo
-                </h2>
-                <p className="text-base text-gray-600 mb-8">
-                    Paste an email message and let the deep learning models analyze it for phishing indicators.
-                </p>
-                <a
-                    href="http://localhost:5173/analyze"
-                    className="inline-block px-8 py-3 font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors duration-200 shadow-sm"
+            <section id="demo" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 text-center border-t border-gray-100`}>
+                <div className="mb-8">
+                    <p className="text-sm font-medium text-slate-600 mb-2 uppercase tracking-wider">
+                        Try It Now
+                    </p>
+                    <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1d1d1f] mb-4">
+                        Try the Email Detection Demo
+                    </h2>
+                    <p className="text-lg text-slate-600 max-w-xl mx-auto">
+                        Paste an email message and let the deep learning models analyze it for phishing indicators.
+                    </p>
+                </div>
+                <Link
+                    to="/analyze"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 font-semibold bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-full transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                     Launch Analyzer
-                </a>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </Link>
             </section>
 
-            <footer className="w-full border-t border-gray-200 py-10 mt-10">
-                <div className="flex flex-col items-center gap-2">
+            <footer className="w-full border-t border-gray-200 py-10 bg-gray-50/50">
+                <div className={`flex flex-col items-center gap-3 ${SECTION_MAX_WIDTH} mx-auto px-6`}>
                     <p className="text-sm text-gray-900 font-medium text-center">
                         MTech Final Year Research Project | Cybersecurity and Machine Learning
                     </p>
-                    <div className="flex gap-4 text-xs text-gray-500 mt-2">
-                        <a href="https://github.com/sudo-Harshk" className="hover:text-gray-900 transition-colors" target="_blank" rel="noopener noreferrer">
+                    <div className="flex gap-6 text-xs text-gray-500">
+                        <a href="https://github.com/sudo-Harshk" className="hover:text-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded px-1" target="_blank" rel="noopener noreferrer">
                             GitHub
                         </a>
-                        <a href="#" className="hover:text-gray-900 transition-colors">
-                            Research Paper
+                        <a href="#overview" className="hover:text-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded px-1">
+                            Overview
                         </a>
-                        <a href="#" className="hover:text-gray-900 transition-colors">
-                            Documentation
+                        <a href="#architecture" className="hover:text-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded px-1">
+                            Architecture
                         </a>
+                        <Link to="/analyze" className="hover:text-indigo-600 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded px-1">
+                            Demo
+                        </Link>
                     </div>
                 </div>
             </footer>

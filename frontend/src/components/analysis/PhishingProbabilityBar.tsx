@@ -34,7 +34,7 @@ export default function PhishingProbabilityBar({ probability }: PhishingProbabil
     return (
         <div className="space-y-2">
             <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-600">Phishing Probability</span>
+                <span className="text-sm font-medium text-slate-600">Phishing Probability</span>
                 <span className={`text-sm font-bold tabular-nums transition-colors duration-300 ${getTextColor()}`}>
                     {probability.toFixed(1)}%
                 </span>
@@ -63,13 +63,13 @@ export default function PhishingProbabilityBar({ probability }: PhishingProbabil
             </div>
 
             <div className="flex justify-between text-xs font-medium">
-                <span className={`transition-colors duration-300 ${probability < 40 ? 'text-emerald-600' : 'text-gray-400'}`}>
+                <span className={`transition-colors duration-300 ${probability < 40 ? 'text-emerald-600' : 'text-slate-500'}`}>
                     SAFE
                 </span>
-                <span className={`transition-colors duration-300 ${probability >= 40 && probability < 70 ? 'text-amber-600' : 'text-gray-400'}`}>
+                <span className={`transition-colors duration-300 ${probability >= 40 && probability < 70 ? 'text-amber-600' : 'text-slate-500'}`}>
                     SUSPICIOUS
                 </span>
-                <span className={`transition-colors duration-300 ${probability >= 70 ? 'text-red-600' : 'text-gray-400'}`}>
+                <span className={`transition-colors duration-300 ${probability >= 70 ? 'text-red-600' : 'text-slate-500'}`}>
                     DANGEROUS
                 </span>
             </div>

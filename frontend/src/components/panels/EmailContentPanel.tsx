@@ -18,7 +18,7 @@ export default function EmailContentPanel({
     const canAnalyze = text.trim().length > 0 && !isLoading;
 
     return (
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
             <PanelHeader
                 title="Email Content"
                 subtitle="Paste the full email body to analyze for phishing indicators."
@@ -29,7 +29,7 @@ export default function EmailContentPanel({
                 value={text}
                 onChange={(e) => onTextChange(e.target.value)}
                 placeholder="Dear Customer, Your account has been suspended..."
-                className={`w-full border border-gray-200 rounded-lg p-4 text-sm text-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent bg-gray-50/50 placeholder:text-gray-400 transition-opacity duration-200 ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+                className={`w-full border border-gray-200 rounded-lg p-4 text-sm text-slate-700 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-gray-50/50 placeholder:text-slate-500 transition-opacity duration-200 ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
                 style={{ minHeight: "280px" }}
                 disabled={isLoading}
                 readOnly={isLoading}
@@ -39,8 +39,8 @@ export default function EmailContentPanel({
                 <button
                     onClick={onAnalyze}
                     disabled={!canAnalyze}
-                    className={`px-5 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg transition-all duration-200 ${canAnalyze
-                            ? 'hover:bg-gray-800 cursor-pointer'
+                    className={`inline-flex items-center gap-2 px-8 py-3.5 bg-indigo-600 text-white text-sm font-semibold rounded-full transition-all duration-200 motion-reduce:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${canAnalyze
+                            ? 'hover:bg-indigo-700 hover:-translate-y-0.5 cursor-pointer shadow-lg shadow-indigo-500/25'
                             : 'opacity-50 cursor-not-allowed'
                         }`}
                 >
@@ -49,7 +49,7 @@ export default function EmailContentPanel({
                 {text.trim() && !isLoading && (
                     <button
                         onClick={onClear}
-                        className="px-4 py-2.5 text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors duration-200"
+                        className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-medium text-slate-600 border border-slate-300 hover:border-slate-400 rounded-full hover:bg-slate-50 transition-all duration-200 motion-reduce:hover:translate-y-0 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         Clear
                     </button>

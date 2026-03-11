@@ -19,7 +19,7 @@ interface AnalysisResultPanelProps {
 
 export default function AnalysisResultPanel({ result, isLoading, error }: AnalysisResultPanelProps) {
     return (
-        <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 h-full flex flex-col">
+        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 h-full flex flex-col">
             <PanelHeader
                 title="Analysis Result"
                 subtitle={isLoading ? "Analyzing..." : "Email security assessment"}
@@ -35,10 +35,10 @@ export default function AnalysisResultPanel({ result, isLoading, error }: Analys
                 {error && !isLoading && (
                     <div className="flex-1 flex items-center justify-center transition-opacity duration-200 ease-out">
                         <div className="text-center">
-                            <p className="text-gray-600 text-sm font-medium">
+                            <p className="text-slate-600 text-sm font-medium">
                                 Unable to analyze email
                             </p>
-                            <p className="text-gray-400 text-xs mt-1">
+                            <p className="text-slate-500 text-xs mt-1">
                                 Please try again.
                             </p>
                         </div>
@@ -47,7 +47,7 @@ export default function AnalysisResultPanel({ result, isLoading, error }: Analys
 
                 {!result && !isLoading && !error && (
                     <div className="flex-1 flex items-center justify-center rounded-lg bg-gray-50 border border-gray-100 transition-opacity duration-200 ease-out">
-                        <p className="text-gray-400 text-sm font-medium">
+                        <p className="text-slate-500 text-sm font-medium">
                             Run an analysis to view results
                         </p>
                     </div>
