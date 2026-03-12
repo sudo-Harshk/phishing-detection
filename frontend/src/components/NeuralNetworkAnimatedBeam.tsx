@@ -75,7 +75,7 @@ export default function NeuralNetworkAnimatedBeam() {
     }, [totalCycleDurationSec, prefersReducedMotion]);
 
     return (
-        <div className="relative flex h-full w-full items-center justify-center overflow-visible rounded-xl bg-gradient-to-b from-slate-50/80 to-white" ref={containerRef}>
+        <div className="relative flex h-full w-full items-center justify-center overflow-visible" ref={containerRef}>
             <div className='flex h-full w-full flex-row items-stretch justify-center md:justify-end gap-8 md:gap-16 lg:gap-24 mb-16'>
                 <div className='flex flex-col items-center justify-center gap-12 relative'>
                     {inputRefs.map((ref, i) => (
