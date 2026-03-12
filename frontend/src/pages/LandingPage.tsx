@@ -47,7 +47,7 @@ export default function LandingPage() {
             <a href="#overview" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-6 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#0078d4] focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-[#0078d4]">
                 Skip to content
             </a>
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+            <nav className="lp-navbar-bg fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-md border-b border-gray-100 transition-all duration-300">
                 <div className={`${SECTION_MAX_WIDTH} mx-auto flex items-center justify-between px-6 py-4 lg:px-8`}>
                     <span className="text-[0.9375rem] font-semibold text-[#262626] select-none truncate pr-4">
                         <span className="hidden sm:inline">Character-Level Phishing Detection System</span>
@@ -93,7 +93,7 @@ export default function LandingPage() {
                 </div>
 
                 {mobileMenuOpen && (
-                    <div className="md:hidden border-t border-slate-200/60 bg-white/95 backdrop-blur-lg">
+                    <div className="md:hidden border-t border-slate-200/60 bg-white backdrop-blur-lg">
                         <p className="px-6 pt-4 pb-2 text-xs text-[#616161] font-medium tabular-nums" aria-live="polite">
                             Section {NAV_LINKS.findIndex((l) => l.href.substring(1) === activeSection) + 1 || 1} of {NAV_LINKS.length}
                         </p>
@@ -117,8 +117,9 @@ export default function LandingPage() {
                 )}
             </nav>
 
-            <main className={`relative ${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 pt-20 pb-16 md:pt-28 md:pb-20`}>
-                <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#e6f2fb]/50 via-white to-white pointer-events-none" aria-hidden />
+            <section className="relative w-full overflow-hidden">
+                <div className="lp-hero-bg absolute inset-0 -z-10 pointer-events-none" aria-hidden />
+                <main className={`relative ${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 pt-20 pb-16 md:pt-28 md:pb-20`}>
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
                     <div className="flex-1 max-w-xl space-y-4">
                         <p className="lp-label text-sm font-medium tracking-wide uppercase">
@@ -161,9 +162,11 @@ export default function LandingPage() {
                         <NeuralNetworkAnimatedBeam />
                     </div>
                 </div>
-            </main>
+                </main>
+            </section>
 
-            <section id="overview" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 border-t border-gray-100`}>
+            <section id="overview" className="lp-overview-bg w-full border-t border-gray-100">
+                <div className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16`}>
                 <div className="text-center mb-16">
                     <p className="lp-label mb-2">
                         Research Overview
@@ -178,7 +181,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-green-50/50 border border-green-100 rounded-[var(--lp-radius-lg)] p-6 flex flex-col items-center text-center">
+                    <div className="lp-card-overview border border-green-100 rounded-[var(--lp-radius-lg)] p-6 flex flex-col items-center text-center">
                         <div className="w-12 h-12 bg-green-100/50 rounded-full flex items-center justify-center mb-4">
                             <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -188,7 +191,7 @@ export default function LandingPage() {
                         <p className="text-sm text-green-800">Message identified as legitimate.</p>
                     </div>
 
-                    <div className="bg-amber-50/50 border border-amber-100 rounded-[var(--lp-radius-lg)] p-6 flex flex-col items-center text-center">
+                    <div className="lp-card-overview border border-amber-100 rounded-[var(--lp-radius-lg)] p-6 flex flex-col items-center text-center">
                         <div className="w-12 h-12 bg-amber-100/50 rounded-full flex items-center justify-center mb-4">
                             <svg className="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2.25m0 2.625h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -198,7 +201,7 @@ export default function LandingPage() {
                         <p className="text-sm text-amber-800">Contains potential phishing indicators.</p>
                     </div>
 
-                    <div className="bg-rose-50/50 border border-rose-100 rounded-[var(--lp-radius-lg)] p-6 flex flex-col items-center text-center">
+                    <div className="lp-card-overview border border-rose-100 rounded-[var(--lp-radius-lg)] p-6 flex flex-col items-center text-center">
                         <div className="w-12 h-12 bg-rose-100/50 rounded-full flex items-center justify-center mb-4">
                             <svg className="w-6 h-6 text-rose-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
@@ -208,9 +211,11 @@ export default function LandingPage() {
                         <p className="text-sm text-rose-800">High probability of a malicious attack.</p>
                     </div>
                 </div>
+                </div>
             </section>
 
-            <section id="architecture" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 border-t border-gray-100`}>
+            <section id="architecture" className="lp-architecture-bg w-full border-t border-gray-100">
+                <div className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16`}>
                 <div className="text-center mb-10">
                     <p className="text-sm font-medium text-slate-600 mb-2 uppercase tracking-wider">
                         How It Works
@@ -230,9 +235,11 @@ export default function LandingPage() {
                         className="w-full h-auto object-contain"
                     />
                 </div>
+                </div>
             </section>
 
-            <section id="features" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 border-t border-gray-100`}>
+            <section id="features" className="lp-features-bg w-full border-t border-gray-100">
+                <div className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16`}>
                 <div className="text-center mb-10">
                     <p className="lp-label mb-2">
                         Capabilities
@@ -246,7 +253,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-white border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
+                    <div className="lp-card-features border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#e6f2fb] flex items-center justify-center">
                             <svg className="w-5 h-5 text-[#0078d4]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -260,7 +267,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
+                    <div className="lp-card-features border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#e8e7ea] flex items-center justify-center">
                             <svg className="w-5 h-5 text-[#5d5bd4]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
@@ -274,7 +281,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
+                    <div className="lp-card-features border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center">
                             <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
@@ -288,7 +295,7 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
+                    <div className="lp-card-features border border-gray-200 rounded-[var(--lp-radius-lg)] p-6 flex flex-col sm:flex-row items-start gap-4 hover:shadow-md hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 transition-all duration-200">
                         <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#e6f2fb] flex items-center justify-center">
                             <svg className="w-5 h-5 text-[#0067b8]" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
@@ -302,9 +309,11 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </div>
+                </div>
             </section>
 
-            <section id="demo" className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 text-center border-t border-gray-100`}>
+            <section id="demo" className="lp-demo-bg w-full border-t border-gray-100">
+                <div className={`${SECTION_MAX_WIDTH} mx-auto px-6 lg:px-8 py-16 text-center`}>
                 <div className="mb-8">
                     <p className="lp-label mb-2">
                         Try It Now
@@ -325,9 +334,10 @@ export default function LandingPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
                 </Link>
+                </div>
             </section>
 
-            <footer className="w-full border-t border-gray-200 py-10 bg-gray-50/50">
+            <footer className="lp-footer-bg w-full border-t border-gray-200 py-10 bg-white">
                 <div className={`flex flex-col items-center gap-3 ${SECTION_MAX_WIDTH} mx-auto px-6`}>
                     <p className="text-sm text-[#262626] font-medium text-center">
                         MTech Final Year Research Project | Cybersecurity and Machine Learning

@@ -1,23 +1,11 @@
-/**
- * Landing Page Theme — Reference design system
- * Scoped to .landing-page — does not affect /analyze
- * Font: Source Sans 3 (open-source Segoe UI alternative)
- */
-
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
-/* ========================================
-   LANDING PAGE SCOPED VARIABLES
-   From Reference JSON — colors, spacing, radii
-   ======================================== */
 
 .landing-page {
-  /* Typography */
   font-family: 'Source Sans 3', 'Segoe UI', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Colors from Reference palette */
   --lp-text-primary: #262626;
   --lp-text-secondary: #616161;
   --lp-text-muted: #94a3b8;
@@ -28,27 +16,26 @@
   --lp-accent-hover: #106ebe;
   --lp-accent-muted: #0067b8;
 
-  /* Spacing scale (8px base from Reference) */
-  --lp-space-1: 0.25rem;   /* 4px */
-  --lp-space-2: 0.5rem;    /* 8px */
-  --lp-space-3: 0.75rem;   /* 12px */
-  --lp-space-4: 1rem;      /* 16px */
-  --lp-space-6: 1.5rem;    /* 24px */
-  --lp-space-8: 2rem;      /* 32px */
+  --lp-email-input-blue: #0078d4;
+  --lp-deep-learning-purple: #5d5bd4;
+  --lp-light-gray: #e2e8f0;
+  --lp-web-interface-green: #10b981;
+  --lp-dark-gray: #262626;
 
-  /* Border radius from Reference */
+  --lp-space-1: 0.25rem;
+  --lp-space-2: 0.5rem;
+  --lp-space-3: 0.75rem;
+  --lp-space-4: 1rem;
+  --lp-space-6: 1.5rem;
+  --lp-space-8: 2rem;
+
   --lp-radius-sm: 4px;
   --lp-radius-md: 16px;
   --lp-radius-lg: 24px;
 
-  /* Shadow from Reference */
   --lp-shadow: rgba(0, 0, 0, 0.12) 0 0 2px 0, rgba(0, 0, 0, 0.14) 0 2px 4px 0;
   --lp-shadow-lg: rgba(0, 0, 0, 0.12) 0 0 2px 0, rgba(0, 0, 0, 0.14) 0 8px 16px 0;
 }
-
-/* ========================================
-   TYPOGRAPHY (Reference typography.styles)
-   ======================================== */
 
 .landing-page h1,
 .landing-page .lp-heading-1 {
@@ -105,10 +92,6 @@
   color: var(--lp-text-muted);
 }
 
-/* ========================================
-   COMPONENTS — Buttons, links, nav
-   ======================================== */
-
 .landing-page .lp-btn-primary {
   background-color: var(--lp-accent);
   color: #ffffff;
@@ -161,9 +144,54 @@
   color: var(--lp-accent-hover);
 }
 
-/* Focus states — accessibility */
 .landing-page a:focus-visible,
 .landing-page button:focus-visible {
   outline: 2px solid var(--lp-accent);
   outline-offset: 2px;
+}
+
+.landing-page .lp-hero-bg {
+  background:
+    radial-gradient(ellipse 140% 100% at 0% 0%, rgba(0, 120, 212, 0.1) 0%, rgba(0, 120, 212, 0.03) 45%, transparent 70%),
+    radial-gradient(ellipse 120% 90% at 100% 100%, rgba(93, 91, 212, 0.08) 0%, rgba(93, 91, 212, 0.02) 40%, transparent 65%),
+    #ffffff;
+}
+
+.landing-page .lp-overview-bg {
+  background:
+    linear-gradient(160deg, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
+    linear-gradient(340deg, rgba(226, 232, 240, 0.15) 0%, transparent 40%),
+    #fafbfd;
+}
+
+.landing-page .lp-card-overview {
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.landing-page .lp-architecture-bg {
+  background: #ffffff;
+}
+
+.landing-page .lp-features-bg {
+  background:
+    linear-gradient(20deg, rgba(16, 185, 129, 0.035) 0%, transparent 45%),
+    linear-gradient(200deg, rgba(93, 91, 212, 0.04) 0%, transparent 35%),
+    #fafbfd;
+}
+
+.landing-page .lp-card-features {
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.landing-page .lp-demo-bg {
+  background:
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(0, 120, 212, 0.08) 0%, rgba(0, 120, 212, 0.02) 50%, transparent 75%),
+    #ffffff;
+}
+
+.landing-page .lp-navbar-bg,
+.landing-page .lp-footer-bg {
+  background: #ffffff;
 }
