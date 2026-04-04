@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import MainLayout from "./MainLayout";
 import EmailContentPanel from "../panels/EmailContentPanel";
@@ -13,6 +14,7 @@ const SECTION_MAX_WIDTH = "max-w-6xl";
 type ConsoleTab = "email" | "url";
 
 export default function SecurityAnalysisConsole() {
+    const reduceMotion = useReducedMotion();
     const [activeTab, setActiveTab] = useState<ConsoleTab>("email");
 
     const [emailText, setEmailText] = useState("");
@@ -103,11 +105,16 @@ export default function SecurityAnalysisConsole() {
         setLinkMeta(null);
     };
 
-    const tabButtonClass = (tab: ConsoleTab) =>
-        `px-5 py-2 text-sm font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${activeTab === tab
-            ? "bg-white text-indigo-700 shadow-sm border border-gray-100"
-            : "text-slate-600 hover:text-slate-900"
-            }`;
+    const tabSpring = reduceMotion
+        ? { duration: 0.01 }
+        : { type: "spring" as const, stiffness: 520, damping: 36, mass: 0.7 };
+
+    const panelTransition = reduceMotion
+        ? { duration: 0.01 }
+        : { duration: 0.22, ease: [0.25, 0.1, 0.25, 1] as const };
+
+    const tabButtonBase =
+        "relative z-0 px-5 py-2 text-sm font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2";
 
     const resultMode: AnalysisMode = activeTab === "url" ? "url" : "email";
 
@@ -139,39 +146,104 @@ export default function SecurityAnalysisConsole() {
 
             <main id="main-content" className={`flex-1 ${SECTION_MAX_WIDTH} mx-auto px-6 py-10 w-full lg:px-8`}>
                 <div className="inline-flex p-1 rounded-full bg-slate-100/90 border border-gray-100 mb-8">
-                    <button type="button" className={tabButtonClass("email")} onClick={() => switchTab("email")}>
-                        Email content
+                    <button type="button" className={tabButtonBase} onClick={() => switchTab("email")}>
+                        {activeTab === "email" && (
+                            <motion.span
+                                layoutId="console-tab-pill"
+                                className="absolute inset-0 rounded-full bg-white shadow-sm border border-gray-100"
+                                transition={tabSpring}
+                            />
+                        )}
+                        <span
+                            className={`relative z-10 ${activeTab === "email" ? "text-indigo-700" : "text-slate-600 hover:text-slate-900"}`}
+                        >
+                            Email content
+                        </span>
                     </button>
-                    <button type="button" className={tabButtonClass("url")} onClick={() => switchTab("url")}>
-                        URL check
+                    <button type="button" className={tabButtonBase} onClick={() => switchTab("url")}>
+                        {activeTab === "url" && (
+                            <motion.span
+                                layoutId="console-tab-pill"
+                                className="absolute inset-0 rounded-full bg-white shadow-sm border border-gray-100"
+                                transition={tabSpring}
+                            />
+                        )}
+                        <span
+                            className={`relative z-10 ${activeTab === "url" ? "text-indigo-700" : "text-slate-600 hover:text-slate-900"}`}
+                        >
+                            URL check
+                        </span>
                     </button>
                 </div>
 
                 <MainLayout>
-                    {activeTab === "email" ? (
-                        <EmailContentPanel
-                            text={emailText}
-                            onTextChange={setEmailText}
-                            onAnalyze={handleAnalyzeEmail}
-                            onClear={handleClearEmail}
+                    <motion.div
+                        className="min-w-0"
+                        initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={
+                            reduceMotion
+                                ? { duration: 0 }
+                                : { duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.02 }
+                        }
+                    >
+                        <AnimatePresence mode="wait" initial={false}>
+                            {activeTab === "email" ? (
+                                <motion.div
+                                    key="email"
+                                    role="presentation"
+                                    initial={reduceMotion ? false : { opacity: 0, x: -14 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={reduceMotion ? undefined : { opacity: 0, x: 10 }}
+                                    transition={panelTransition}
+                                >
+                                    <EmailContentPanel
+                                        text={emailText}
+                                        onTextChange={setEmailText}
+                                        onAnalyze={handleAnalyzeEmail}
+                                        onClear={handleClearEmail}
+                                        isLoading={isLoading}
+                                    />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="url"
+                                    role="presentation"
+                                    initial={reduceMotion ? false : { opacity: 0, x: 14 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={reduceMotion ? undefined : { opacity: 0, x: -10 }}
+                                    transition={panelTransition}
+                                >
+                                    <UrlLinkPanel
+                                        url={urlInput}
+                                        onUrlChange={setUrlInput}
+                                        onAnalyze={handleAnalyzeUrl}
+                                        onClear={handleClearUrl}
+                                        isLoading={isLoading}
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
+                    <motion.div
+                        key={activeTab}
+                        className="min-w-0"
+                        initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={
+                            reduceMotion
+                                ? { duration: 0 }
+                                : { duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.08 }
+                        }
+                    >
+                        <AnalysisResultPanel
+                            result={result}
                             isLoading={isLoading}
+                            error={error}
+                            mode={resultMode}
+                            linkMetadata={activeTab === "url" ? linkMeta : null}
                         />
-                    ) : (
-                        <UrlLinkPanel
-                            url={urlInput}
-                            onUrlChange={setUrlInput}
-                            onAnalyze={handleAnalyzeUrl}
-                            onClear={handleClearUrl}
-                            isLoading={isLoading}
-                        />
-                    )}
-                    <AnalysisResultPanel
-                        result={result}
-                        isLoading={isLoading}
-                        error={error}
-                        mode={resultMode}
-                        linkMetadata={activeTab === "url" ? linkMeta : null}
-                    />
+                    </motion.div>
                 </MainLayout>
             </main>
 
