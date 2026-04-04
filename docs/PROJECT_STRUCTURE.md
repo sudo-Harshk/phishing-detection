@@ -43,19 +43,18 @@ phishing-detection-final/
 │       ├── config/
 │       │   └── api.ts           # API URL configuration
 │       ├── pages/
-│       │   ├── Demo.tsx         # Demo page
-│       │   └── DemoPage.tsx     # Active demo page
+│       │   ├── LandingPage.tsx  # Marketing / home
+│       │   └── DemoPage.tsx     # /analyze → SecurityAnalysisConsole
+│       ├── lib/
+│       │   ├── utils.ts         # Tailwind cn() helper
+│       │   └── urlMetadata.ts   # URL parsing for URL check tab
 │       └── components/
-│           ├── index.ts         # Component exports
-│           ├── AnalysisCard.tsx
-│           ├── LoadingSkeleton.tsx
-│           ├── ProbabilityGauge.tsx
-│           ├── RiskBadge.tsx
 │           ├── layout/
 │           │   ├── MainLayout.tsx
 │           │   └── SecurityAnalysisConsole.tsx
 │           ├── panels/
 │           │   ├── EmailContentPanel.tsx
+│           │   ├── UrlLinkPanel.tsx
 │           │   └── AnalysisResultPanel.tsx
 │           ├── analysis/
 │           │   └── ...
