@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import MainLayout from "./MainLayout";
 import EmailContentPanel from "../panels/EmailContentPanel";
 import UrlLinkPanel from "../panels/UrlLinkPanel";
-import AnalysisResultPanel, { type AnalysisResult, type AnalysisMode } from "../panels/AnalysisResultPanel";
+import AnalysisResultPanel, { type AnalysisResult, type AnalysisMode, type DomainInfo } from "../panels/AnalysisResultPanel";
 import FooterNotice from "../footer/FooterNotice";
 import { API_BASE_URL } from "../../config/api";
 import { parseLinkMetadata, type ParsedLinkMetadata } from "../../lib/urlMetadata";
@@ -22,6 +22,7 @@ export default function SecurityAnalysisConsole() {
 
     const [result, setResult] = useState<AnalysisResult | null>(null);
     const [linkMeta, setLinkMeta] = useState<ParsedLinkMetadata | null>(null);
+    const [domainInfo, setDomainInfo] = useState<DomainInfo | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -30,6 +31,7 @@ export default function SecurityAnalysisConsole() {
         setResult(null);
         setError(null);
         setLinkMeta(null);
+        setDomainInfo(null);
         setIsLoading(false);
     };
 
@@ -51,6 +53,9 @@ export default function SecurityAnalysisConsole() {
             risk_level: data.risk_level,
             latency_ms: data.latency_ms,
         });
+        if (data.domain_info) {
+            setDomainInfo(data.domain_info);
+        }
     };
 
     const handleAnalyzeEmail = async () => {
@@ -58,6 +63,7 @@ export default function SecurityAnalysisConsole() {
         setError(null);
         setResult(null);
         setLinkMeta(null);
+        setDomainInfo(null);
 
         try {
             await predict(emailText);
@@ -71,6 +77,7 @@ export default function SecurityAnalysisConsole() {
     const handleAnalyzeUrl = async () => {
         setError(null);
         setResult(null);
+        setDomainInfo(null);
 
         const meta = parseLinkMetadata(urlInput);
         if (!meta) {
@@ -96,6 +103,7 @@ export default function SecurityAnalysisConsole() {
         setResult(null);
         setError(null);
         setLinkMeta(null);
+        setDomainInfo(null);
     };
 
     const handleClearUrl = () => {
@@ -103,6 +111,7 @@ export default function SecurityAnalysisConsole() {
         setResult(null);
         setError(null);
         setLinkMeta(null);
+        setDomainInfo(null);
     };
 
     const tabSpring = reduceMotion
@@ -242,6 +251,7 @@ export default function SecurityAnalysisConsole() {
                             error={error}
                             mode={resultMode}
                             linkMetadata={activeTab === "url" ? linkMeta : null}
+                            domainInfo={activeTab === "url" ? domainInfo : null}
                         />
                     </motion.div>
                 </MainLayout>

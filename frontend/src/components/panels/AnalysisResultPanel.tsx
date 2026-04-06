@@ -4,8 +4,11 @@ import ResultStatusIndicator from "../analysis/ResultStatusIndicator";
 import PhishingProbabilityBar from "../analysis/PhishingProbabilityBar";
 import MetadataRow from "../analysis/MetadataRow";
 import AnalysisSkeleton from "../analysis/AnalysisSkeleton";
-import LinkMetadataBlock from "../analysis/LinkMetadataBlock";
+import UrlIntelCard from "../analysis/UrlIntelCard";
+import { type DomainInfo } from "../analysis/DomainIntelBlock";
 import type { ParsedLinkMetadata } from "../../lib/urlMetadata";
+
+export type { DomainInfo };
 
 export type AnalysisResult = {
     label: string;
@@ -22,6 +25,7 @@ interface AnalysisResultPanelProps {
     error: string | null;
     mode?: AnalysisMode;
     linkMetadata?: ParsedLinkMetadata | null;
+    domainInfo?: DomainInfo | null;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -32,32 +36,24 @@ export default function AnalysisResultPanel({
     error,
     mode = "email",
     linkMetadata = null,
+    domainInfo = null,
 }: AnalysisResultPanelProps) {
     const reduceMotion = useReducedMotion();
     const isUrl = mode === "url";
+
     const subtitle = isLoading
-        ? isUrl
-            ? "Checking link..."
-            : "Analyzing..."
-        : isUrl
-            ? "Link security assessment"
-            : "Email security assessment";
+        ? isUrl ? "Checking link..." : "Analyzing..."
+        : isUrl ? "Link security assessment" : "Email security assessment";
 
     const emptyHint = isUrl ? "Enter a URL and run a check" : "Run an analysis to view results";
-
     const errorTitle = isUrl ? "Unable to analyze link" : "Unable to analyze email";
 
-    const showLinkBlock = isUrl && linkMetadata && (isLoading || (result && !error));
+    const showIntelCard = isUrl && linkMetadata;
 
-    const swap = reduceMotion
-        ? { duration: 0.01 }
-        : { duration: 0.28, ease };
-
+    const swap = reduceMotion ? { duration: 0.01 } : { duration: 0.28, ease };
     const enter = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 };
     const exit = reduceMotion ? { opacity: 0, y: 0 } : { opacity: 0, y: -6 };
-
     const contentKey = isLoading ? "loading" : error ? "error" : result ? "result" : "empty";
-
     const itemEase = reduceMotion ? { duration: 0 } : { duration: 0.32, ease };
 
     return (
@@ -71,6 +67,7 @@ export default function AnalysisResultPanel({
 
             <div className="flex-1 flex flex-col justify-between min-h-[200px]">
                 <AnimatePresence mode="wait" initial={false}>
+
                     {contentKey === "loading" && (
                         <motion.div
                             key="loading"
@@ -80,18 +77,18 @@ export default function AnalysisResultPanel({
                             animate={{ opacity: 1, y: 0 }}
                             exit={exit}
                             transition={swap}
-                            className="space-y-5"
+                            className="space-y-4"
                         >
-                            {showLinkBlock && linkMetadata && (
+                            {showIntelCard && linkMetadata && (
                                 <motion.div
                                     initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease }}
                                 >
-                                    <LinkMetadataBlock meta={linkMetadata} />
+                                    <UrlIntelCard meta={linkMetadata} domainInfo={null} />
                                 </motion.div>
                             )}
-                            <AnalysisSkeleton />
+                            <AnalysisSkeleton mode={mode} />
                         </motion.div>
                     )}
 
@@ -103,15 +100,15 @@ export default function AnalysisResultPanel({
                             animate={{ opacity: 1, y: 0 }}
                             exit={exit}
                             transition={swap}
-                            className="flex-1 flex flex-col justify-center gap-5"
+                            className="flex-1 flex flex-col justify-center gap-4"
                         >
-                            {isUrl && linkMetadata && (
+                            {showIntelCard && linkMetadata && (
                                 <motion.div
                                     initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease }}
                                 >
-                                    <LinkMetadataBlock meta={linkMetadata} />
+                                    <UrlIntelCard meta={linkMetadata} domainInfo={null} />
                                 </motion.div>
                             )}
                             <div className="text-center">
@@ -141,49 +138,51 @@ export default function AnalysisResultPanel({
                             animate={{ opacity: 1, y: 0 }}
                             exit={exit}
                             transition={swap}
-                            className="space-y-5"
+                            className="space-y-4"
                         >
-                            {showLinkBlock && linkMetadata && (
+                            {/* URL intel card: structure + domain details in one block */}
+                            {showIntelCard && linkMetadata && (
                                 <motion.div
                                     initial={reduceMotion ? false : { opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={reduceMotion ? { duration: 0 } : { ...itemEase, delay: 0.02 }}
                                 >
-                                    <LinkMetadataBlock meta={linkMetadata} />
+                                    <UrlIntelCard meta={linkMetadata} domainInfo={domainInfo} />
                                 </motion.div>
                             )}
 
+                            {/* Risk verdict + probability */}
                             <motion.div
-                                className="space-y-5"
+                                className="space-y-4"
                                 initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={
                                     reduceMotion
                                         ? { duration: 0 }
-                                        : { ...itemEase, delay: showLinkBlock && linkMetadata ? 0.1 : 0.04 }
+                                        : { ...itemEase, delay: showIntelCard ? 0.1 : 0.04 }
                                 }
                             >
-                                <ResultStatusIndicator riskLevel={result.risk_level} />
-
-                                <PhishingProbabilityBar probability={result.phishing_probability * 100} />
+                                <ResultStatusIndicator riskLevel={result.risk_level} mode={mode} />
+                                <PhishingProbabilityBar probability={result.phishing_probability * 100} mode={mode} />
                             </motion.div>
 
+                            {/* Footer row */}
                             <motion.div
-                                className="pt-5 mt-auto"
+                                className="pt-4 mt-auto"
                                 initial={reduceMotion ? false : { opacity: 0, y: 8 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={
                                     reduceMotion
                                         ? { duration: 0 }
-                                        : { ...itemEase, delay: showLinkBlock && linkMetadata ? 0.18 : 0.12 }
+                                        : { ...itemEase, delay: showIntelCard ? 0.18 : 0.12 }
                                 }
                             >
-                                <div className="border-t border-gray-100/60 mb-5" />
-
+                                <div className="border-t border-gray-100/60 mb-4" />
                                 <MetadataRow label={result.label} latencyMs={result.latency_ms} />
                             </motion.div>
                         </motion.div>
                     )}
+
                 </AnimatePresence>
             </div>
         </div>

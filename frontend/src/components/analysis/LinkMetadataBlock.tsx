@@ -23,7 +23,7 @@ export default function LinkMetadataBlock({ meta }: LinkMetadataBlockProps) {
         <div className="rounded-xl border border-gray-100 bg-slate-50/80 p-4 space-y-3">
             <p className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Link metadata</p>
             <p className="text-xs text-slate-500 -mt-1">
-                Parsed locally (structure only). Compare the host to who the sender claims to represent.
+                Parsed locally (structure only). Verify the host matches the site it claims to be.
             </p>
             <div className="space-y-2.5 pt-1">
                 <Row label="Full URL" value={meta.normalizedUrl} />

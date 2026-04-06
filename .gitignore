@@ -200,3 +200,5 @@ coverage/
 *.so
 *.dll
 *.dylib
+
+.claude/

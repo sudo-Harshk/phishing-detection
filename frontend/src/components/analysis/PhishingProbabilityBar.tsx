@@ -1,8 +1,9 @@
 interface PhishingProbabilityBarProps {
     probability: number;
+    mode?: "email" | "url";
 }
 
-export default function PhishingProbabilityBar({ probability }: PhishingProbabilityBarProps) {
+export default function PhishingProbabilityBar({ probability, mode = "email" }: PhishingProbabilityBarProps) {
     const getSectionOpacity = (section: 'safe' | 'suspicious' | 'dangerous') => {
         if (probability < 40) {
             return section === 'safe' ? 'opacity-100' : 'opacity-30';
@@ -34,7 +35,7 @@ export default function PhishingProbabilityBar({ probability }: PhishingProbabil
     return (
         <div className="space-y-2">
             <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-slate-600">Phishing Probability</span>
+                <span className="text-sm font-medium text-slate-600">{mode === "url" ? "Threat Probability" : "Phishing Probability"}</span>
                 <span className={`text-sm font-bold tabular-nums transition-colors duration-300 ${getTextColor()}`}>
                     {probability.toFixed(1)}%
                 </span>

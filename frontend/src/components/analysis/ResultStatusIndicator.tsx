@@ -1,34 +1,66 @@
 interface ResultStatusIndicatorProps {
     riskLevel: "Low" | "Moderate" | "High";
+    mode?: "email" | "url";
 }
 
 const riskConfig = {
-    Low: {
-        bg: "bg-emerald-100/80",
-        border: "border-emerald-200/60",
-        iconBg: "bg-emerald-200/70",
-        iconColor: "text-emerald-600",
-        titleColor: "text-emerald-800",
-        subtitleColor: "text-emerald-600/80",
-        description: "This email appears to be safe",
+    email: {
+        Low: {
+            bg: "bg-emerald-100/80",
+            border: "border-emerald-200/60",
+            iconBg: "bg-emerald-200/70",
+            iconColor: "text-emerald-600",
+            titleColor: "text-emerald-800",
+            subtitleColor: "text-emerald-600/80",
+            description: "This email appears to be safe",
+        },
+        Moderate: {
+            bg: "bg-amber-100/80",
+            border: "border-amber-200/60",
+            iconBg: "bg-amber-200/70",
+            iconColor: "text-amber-600",
+            titleColor: "text-amber-800",
+            subtitleColor: "text-amber-600/80",
+            description: "This email shows suspicious patterns",
+        },
+        High: {
+            bg: "bg-red-100/80",
+            border: "border-red-200/60",
+            iconBg: "bg-red-200/70",
+            iconColor: "text-red-600",
+            titleColor: "text-red-800",
+            subtitleColor: "text-red-600/80",
+            description: "This email is likely a phishing attempt",
+        },
     },
-    Moderate: {
-        bg: "bg-amber-100/80",
-        border: "border-amber-200/60",
-        iconBg: "bg-amber-200/70",
-        iconColor: "text-amber-600",
-        titleColor: "text-amber-800",
-        subtitleColor: "text-amber-600/80",
-        description: "This email shows suspicious patterns",
-    },
-    High: {
-        bg: "bg-red-100/80",
-        border: "border-red-200/60",
-        iconBg: "bg-red-200/70",
-        iconColor: "text-red-600",
-        titleColor: "text-red-800",
-        subtitleColor: "text-red-600/80",
-        description: "This email is likely a phishing attempt",
+    url: {
+        Low: {
+            bg: "bg-emerald-100/80",
+            border: "border-emerald-200/60",
+            iconBg: "bg-emerald-200/70",
+            iconColor: "text-emerald-600",
+            titleColor: "text-emerald-800",
+            subtitleColor: "text-emerald-600/80",
+            description: "This URL appears to be safe",
+        },
+        Moderate: {
+            bg: "bg-amber-100/80",
+            border: "border-amber-200/60",
+            iconBg: "bg-amber-200/70",
+            iconColor: "text-amber-600",
+            titleColor: "text-amber-800",
+            subtitleColor: "text-amber-600/80",
+            description: "This URL shows suspicious patterns",
+        },
+        High: {
+            bg: "bg-red-100/80",
+            border: "border-red-200/60",
+            iconBg: "bg-red-200/70",
+            iconColor: "text-red-600",
+            titleColor: "text-red-800",
+            subtitleColor: "text-red-600/80",
+            description: "This URL is likely malicious",
+        },
     },
 };
 
@@ -38,8 +70,8 @@ const riskLabels = {
     High: "High Risk",
 };
 
-export default function ResultStatusIndicator({ riskLevel }: ResultStatusIndicatorProps) {
-    const config = riskConfig[riskLevel];
+export default function ResultStatusIndicator({ riskLevel, mode = "email" }: ResultStatusIndicatorProps) {
+    const config = riskConfig[mode][riskLevel];
 
     return (
         <div className={`flex items-center gap-4 p-6 ${config.bg} border ${config.border} rounded-xl`}>

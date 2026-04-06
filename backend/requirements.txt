@@ -12,3 +12,7 @@ torch==2.2.0
 # HTML Parsing
 beautifulsoup4==4.12.3
 lxml==5.1.0
+
+# HTTP client & env
+requests==2.31.0
+python-dotenv==1.0.1

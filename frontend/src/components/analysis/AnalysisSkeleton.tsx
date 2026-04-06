@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-export default function AnalysisSkeleton() {
+export default function AnalysisSkeleton({ mode = "email" }: { mode?: "email" | "url" }) {
     const reduceMotion = useReducedMotion();
     const instant = reduceMotion ? { duration: 0 } : false;
     const row = reduceMotion
@@ -63,7 +63,7 @@ export default function AnalysisSkeleton() {
                 animate={{ opacity: 1 }}
                 transition={instant || { duration: 0.3, delay: 0.22 }}
             >
-                Analyzing email security…
+                {mode === "url" ? "Checking link security…" : "Analyzing email security…"}
             </motion.p>
         </motion.div>
     );
