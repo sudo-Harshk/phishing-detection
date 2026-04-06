@@ -18,7 +18,7 @@ export default function EmailContentPanel({
     const canAnalyze = text.trim().length > 0 && !isLoading;
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
             <PanelHeader
                 title="Email Content"
                 subtitle="Paste the full email body to analyze for phishing indicators."

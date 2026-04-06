@@ -18,10 +18,10 @@ export default function UrlLinkPanel({
     const canAnalyze = url.trim().length > 0 && !isLoading;
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
             <PanelHeader
                 title="Link / URL"
-                subtitle="Paste a full URL. We parse its structure in the browser, then run the same model on the link text."
+                subtitle="Paste a full URL. We parse the structure locally, then check it against 90+ security engines."
             />
 
             <input

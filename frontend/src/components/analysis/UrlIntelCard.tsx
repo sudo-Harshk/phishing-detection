@@ -123,7 +123,7 @@ export default function UrlIntelCard({ meta, domainInfo }: UrlIntelCardProps) {
     }
 
     return (
-        <div className="rounded-xl border border-gray-200 overflow-hidden text-sm">
+        <div className="rounded-xl border border-gray-200 shadow-sm overflow-hidden text-sm">
 
             {/* ── URL section ───────────────────────────────────────── */}
             <div className="px-4 pt-4 pb-3 bg-white">

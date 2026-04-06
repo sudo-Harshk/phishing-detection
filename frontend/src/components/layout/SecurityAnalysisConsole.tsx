@@ -140,7 +140,7 @@ export default function SecurityAnalysisConsole() {
                                 Phishing Detection
                             </h1>
                             <p className="text-sm text-slate-600 mt-0.5">
-                                Email Security Analysis Console
+                                Security Analysis Console
                             </p>
                         </div>
                         <Link
