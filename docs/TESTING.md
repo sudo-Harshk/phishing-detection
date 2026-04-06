@@ -3,6 +3,7 @@
 ## Backend Tests
 
 ### Location
+
 ```
 backend/tests/
 ```
@@ -11,28 +12,21 @@ backend/tests/
 
 | File | Purpose |
 |------|---------|
-| `test_inference.py` | End-to-end inference test |
-| `test_model_load.py` | Model loading validation |
-| `test_preprocessing.py` | Text preprocessing tests |
-| `test_threshold_inference.py` | Threshold classification tests |
+| `test_inference.py` | End-to-end DistilBERT inference |
+| `test_model_load.py` | CharGRU model loading validation |
+| `test_preprocessing.py` | Email text preprocessing pipeline |
+| `test_threshold_inference.py` | Risk level threshold classification |
 
 ### Running Tests
 
 ```bash
 cd backend
+venv\Scripts\activate   # Windows
+# source venv/bin/activate  # macOS / Linux
 
-# Activate virtual environment
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # Unix
-
-# Run all tests with pytest
 pytest tests/
-
-# Run specific test
-pytest tests/test_inference.py
-
-# Run with verbose output
-pytest tests/ -v
+pytest tests/test_inference.py        # single file
+pytest tests/ -v                      # verbose
 ```
 
 ### Manual API Testing
@@ -41,67 +35,77 @@ pytest tests/ -v
 # Health check
 curl http://localhost:8000/health
 
-# Prediction test
+# Email analysis
 curl -X POST http://localhost:8000/api/predict \
   -H "Content-Type: application/json" \
-  -d '{"text": "Test email content"}'
+  -d '{"text": "Congratulations! Click here to claim your prize."}'
+
+# URL analysis
+curl -X POST http://localhost:8000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text": "https://example.com"}'
 ```
 
 ---
 
-## Frontend Testing
+## Frontend
 
-### Build Check
+### Type check and build
 
 ```bash
 cd frontend
-
-# Type check
 npm run lint
-
-# Production build
 npm run build
 ```
 
-### Manual UI Testing
+### Manual UI testing checklist
 
-1. Start both servers
-2. Open `http://localhost:5173`
-3. Test scenarios:
-   - Empty input → Error handling
-   - Clean email → Low risk result
-   - Phishing email → High risk result
-   - Clear button → Resets state
+**Email tab:**
+1. Submit empty input → error state shown
+2. Submit clean email → Low risk result, ~100–500 ms latency
+3. Submit phishing-like email → High risk, probability bar in red zone
+4. Clear button → resets all state
+
+**URL tab:**
+1. Submit invalid text → "Enter a valid URL" error
+2. Submit clean URL (e.g. `https://google.com`) → URL intel card + Clean result
+3. Submit known phishing URL → High risk, domain details populated (registrar, categories, engine bar)
+4. URL without query params → Query chip hidden (not shown as "—")
+5. HTTP URL → scheme badge shown in red
+6. Switch tabs → all state resets
 
 ---
 
 ## Test Scenarios
 
-### Input Validation
+### Email — input validation
 
-| Input | Expected Behavior |
-|-------|-------------------|
-| Empty string | 400 error: "Empty input" |
-| Whitespace only | 400 error: "Empty input" |
-| Valid text | 200 with prediction |
-| Very long text | Truncated, processed |
-| HTML content | Stripped, processed |
+| Input | Expected |
+|-------|----------|
+| Empty string | 400 — `Empty input` |
+| Whitespace only | 400 — `Empty input` |
+| Normal business email | Clean, Low |
+| Urgent account verification | Phishing, High |
+| Password reset scam | Phishing, High |
 
-### Classification Accuracy
+### URL — analysis
 
-| Sample Type | Expected Label | Expected Risk |
-|-------------|----------------|---------------|
-| Normal business email | Clean | Low |
-| Promotional content | Clean/Suspicious | Low/Moderate |
-| Urgent verification request | Phishing | High |
-| Password reset scam | Phishing | High |
+| Input | Expected |
+|-------|----------|
+| `https://google.com` | Clean, Low, domain info present |
+| Known phishing URL | Phishing/Suspicious, engine bar red |
+| URL with query params | Query chip visible in URL card |
+| `http://` URL | Scheme badge red in URL card |
+| Unknown/new domain | May return `domain_info: null` |
 
 ---
 
 ## Performance Benchmarks
 
-| Metric | Target | Typical |
-|--------|--------|---------|
-| First request | < 30s | 10-20s |
-| Subsequent requests | < 500ms | 50-200ms |
-| Frontend load | < 2s | < 1s |
+| Metric | Typical |
+|--------|---------|
+| Email — first request (model load) | 10–20 s |
+| Email — subsequent requests | 100–500 ms |
+| URL — cached domain | 1–2 s |
+| URL — new domain (with polling) | 4–8 s |
+| Frontend initial load | < 1 s |

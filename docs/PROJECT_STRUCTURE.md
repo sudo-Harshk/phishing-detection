@@ -2,98 +2,118 @@
 
 ```
 phishing-detection-final/
-├── README.md                    # Project overview
-├── docker-compose.yml           # One-command deployment
+├── README.md
+├── docker-compose.yml
 ├── .gitignore
 │
-├── backend/                     # FastAPI server
-│   ├── Dockerfile               # Backend container
+├── backend/
+│   ├── README.md
+│   ├── Dockerfile
 │   ├── .dockerignore
-│   ├── requirements.txt         # Python dependencies
-│   ├── app/
-│   │   ├── main.py              # FastAPI app entry
-│   │   ├── config.py            # Configuration constants
-│   │   ├── api/
-│   │   │   └── predict.py       # /api/predict endpoint
-│   │   ├── core/
-│   │   │   ├── hf_distilbert_inference.py  # DistilBERT model (active)
-│   │   │   ├── inference.py     # CharGRU inference
-│   │   │   ├── model_loader.py  # Keras model loading
-│   │   │   └── preprocessing.py # Text preprocessing
-│   │   └── utils/
-│   │       └── logger.py
+│   ├── .env                              # API keys (not committed)
+│   ├── requirements.txt
+│   └── app/
+│       ├── main.py                       # FastAPI app, CORS, router
+│       ├── config.py                     # Paths, constants, loads .env
+│       ├── api/
+│       │   └── predict.py                # POST /api/predict — routes email vs URL
+│       ├── core/
+│       │   ├── hf_distilbert_inference.py  # Email analysis via DistilBERT (active)
+│       │   ├── virustotal.py               # URL analysis via VirusTotal API v3
+│       │   ├── inference.py                # CharGRU inference (alternative)
+│       │   ├── model_loader.py             # Lazy Keras model loader
+│       │   └── preprocessing.py            # Email HTML stripping & normalisation
+│       └── utils/
+│           └── logger.py
 │   ├── models/
-│   │   └── chargru_advtrain_model.keras    # CharGRU model file
+│   │   └── chargru_advtrain_model.keras  # CharGRU model weights
 │   ├── assets/
-│   │   └── char_dictionary.json # Character vocabulary
+│   │   ├── char_dictionary.json          # 95-symbol character vocabulary
+│   │   └── example_emails/
+│   │       ├── clean_1.txt
+│   │       └── phishing_1.txt
 │   └── tests/
-│       └── ...
+│       ├── test_inference.py
+│       ├── test_model_load.py
+│       ├── test_preprocessing.py
+│       └── test_threshold_inference.py
 │
-├── frontend/                    # React application
-│   ├── Dockerfile               # Frontend container (multi-stage)
-│   ├── nginx.conf               # Nginx SPA config
+├── frontend/
+│   ├── Dockerfile                        # Multi-stage: Node build → Nginx serve
+│   ├── nginx.conf                        # SPA routing config
 │   ├── .dockerignore
 │   ├── package.json
 │   ├── vite.config.ts
+│   ├── tsconfig.json
 │   ├── index.html
 │   └── src/
-│       ├── App.tsx              # Root component
-│       ├── main.tsx             # Entry point
-│       ├── index.css            # Global styles
+│       ├── App.tsx                       # Routes: / and /analyze
+│       ├── main.tsx
+│       ├── index.css
 │       ├── config/
-│       │   └── api.ts           # API URL configuration
-│       ├── pages/
-│       │   ├── LandingPage.tsx  # Marketing / home
-│       │   └── DemoPage.tsx     # /analyze → SecurityAnalysisConsole
+│       │   └── api.ts                    # Backend URL (VITE_API_URL env var)
 │       ├── lib/
-│       │   ├── utils.ts         # Tailwind cn() helper
-│       │   └── urlMetadata.ts   # URL parsing for URL check tab
+│       │   ├── utils.ts                  # cn() Tailwind helper
+│       │   └── urlMetadata.ts            # URL parsing, normalisation, heuristics
+│       ├── pages/
+│       │   ├── LandingPage.tsx           # Home / overview page
+│       │   └── DemoPage.tsx              # /analyze — mounts SecurityAnalysisConsole
 │       └── components/
+│           ├── NeuralNetworkAnimatedBeam.tsx  # Landing page animation
+│           ├── ui/
+│           │   └── animated-beam.tsx         # Animated connector primitive
 │           ├── layout/
-│           │   ├── MainLayout.tsx
-│           │   └── SecurityAnalysisConsole.tsx
+│           │   ├── MainLayout.tsx            # Two-column grid
+│           │   └── SecurityAnalysisConsole.tsx  # Root: tabs, state, API calls
 │           ├── panels/
-│           │   ├── EmailContentPanel.tsx
-│           │   ├── UrlLinkPanel.tsx
-│           │   └── AnalysisResultPanel.tsx
+│           │   ├── EmailContentPanel.tsx     # Email textarea + buttons
+│           │   ├── UrlLinkPanel.tsx          # URL input + buttons
+│           │   └── AnalysisResultPanel.tsx   # Result states (loading/error/result)
 │           ├── analysis/
-│           │   └── ...
+│           │   ├── UrlIntelCard.tsx          # Unified URL card (structure + domain)
+│           │   ├── DomainIntelBlock.tsx      # DomainInfo type definition
+│           │   ├── LinkMetadataBlock.tsx     # (legacy — superseded by UrlIntelCard)
+│           │   ├── ResultStatusIndicator.tsx # Risk badge, mode-aware copy
+│           │   ├── PhishingProbabilityBar.tsx  # Probability bar, mode-aware label
+│           │   ├── AnalysisSkeleton.tsx      # Loading skeleton, mode-aware text
+│           │   └── MetadataRow.tsx           # Footer: label + latency
 │           ├── common/
 │           │   └── PanelHeader.tsx
 │           └── footer/
 │               └── FooterNotice.tsx
 │
-└── docs/                        # Documentation
-    ├── PRD.md                   # Product requirements
-    ├── ARCHITECTURE.md          # System design
-    ├── SETUP.md                 # Installation guide
-    ├── DOCKER.md                # Docker deployment
-    ├── DEPLOYMENT.md            # Deployment guide
-    ├── API.md                   # API reference
-    ├── DEMO_GUIDE.md            # Demo instructions
-    ├── TESTING.md               # Testing guide
-    └── PROJECT_STRUCTURE.md     # This file
+└── docs/
+    ├── API.md                            # API reference
+    ├── ARCHITECTURE.md                   # System design & data flows
+    ├── PROJECT_STRUCTURE.md              # This file
+    ├── SETUP.md                          # Local development setup
+    ├── DOCKER.md                         # Docker deployment
+    ├── DEPLOYMENT.md                     # Production deployment
+    ├── TESTING.md                        # Testing guide
+    ├── DEMO_GUIDE.md                     # Demo walkthrough
+    └── PRD.md                            # Product requirements
 ```
+
+---
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
-| `docker-compose.yml` | One-command deployment |
-| `backend/Dockerfile` | Backend container image |
-| `frontend/Dockerfile` | Frontend container image |
-| `backend/app/main.py` | FastAPI application entry |
-| `backend/app/api/predict.py` | Prediction API endpoint |
-| `backend/app/core/hf_distilbert_inference.py` | Active inference engine |
-| `frontend/src/config/api.ts` | API URL configuration |
-| `frontend/src/components/layout/SecurityAnalysisConsole.tsx` | Main UI component |
-| `docs/PRD.md` | Product requirements document |
+| `backend/.env` | `VIRUSTOTAL_API_KEY` — required for URL analysis |
+| `backend/app/api/predict.py` | Single endpoint; auto-detects URL vs email |
+| `backend/app/core/virustotal.py` | VirusTotal submit + domain fetch (concurrent) |
+| `backend/app/core/hf_distilbert_inference.py` | Active email inference engine |
+| `frontend/src/components/layout/SecurityAnalysisConsole.tsx` | Root UI component |
+| `frontend/src/components/analysis/UrlIntelCard.tsx` | URL intel card (structure + domain) |
+| `frontend/src/lib/urlMetadata.ts` | Client-side URL parsing and heuristics |
+| `frontend/src/config/api.ts` | Backend base URL configuration |
 
 ## Docker Files
 
 | File | Purpose |
 |------|---------|
-| `docker-compose.yml` | Orchestrates frontend + backend |
-| `backend/Dockerfile` | Python 3.10 + TensorFlow + PyTorch |
-| `frontend/Dockerfile` | Multi-stage: Node build → Nginx serve |
-| `frontend/nginx.conf` | SPA routing configuration |
+| `docker-compose.yml` | Orchestrates frontend + backend containers |
+| `backend/Dockerfile` | Python 3.12 + ML dependencies |
+| `frontend/Dockerfile` | Node build stage → Nginx serve stage |
+| `frontend/nginx.conf` | Serves SPA, proxies `/api` to backend |
