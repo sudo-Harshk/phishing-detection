@@ -51,7 +51,6 @@ function EngineVerdictBar({
 }) {
     const clean = total - malicious - suspicious;
     const flagged = malicious + suspicious;
-    const flaggedPct = total > 0 ? (flagged / total) * 100 : 0;
     const malPct = total > 0 ? (malicious / total) * 100 : 0;
     const susPct = total > 0 ? (suspicious / total) * 100 : 0;
     const cleanPct = total > 0 ? (clean / total) * 100 : 0;
